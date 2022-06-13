@@ -106,7 +106,6 @@ class FormulaireAdhesion extends StatelessWidget {
                         hintText: "centre d'appel",
                         labelText: "centre d'appel",
                       ),
-                      obscureText: true,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Entrez votre centre d'appel";

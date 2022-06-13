@@ -1,3 +1,4 @@
+import 'package:africulture_mobile/componsants/pages/profil/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -7,6 +8,7 @@ import 'panier_controller.dart';
 
 class Pagner extends StatelessWidget {
   PanierController panierController = Get.find();
+  ProfileControllers profileControllers = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +68,11 @@ class Pagner extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: List.generate(
                         panierController.listeProduit.value.length, (index) {
-                      return CartePanier();
+                      return CartePanier(
+                          index,
+                          true,
+                          panierController.listeProduit.value[index]
+                              ['quantite']);
                     }),
                   ),
                   Padding(
@@ -76,10 +82,22 @@ class Pagner extends StatelessWidget {
                     ),
                     child: ElevatedButton(
                       onPressed: () {
-                        if (panierController.listeProduit.value.length == 0) {
+                        if (panierController.listeProduit.value.isEmpty) {
                           Get.snackbar("Panier", "Le Panier est vide !");
                         } else {
-                          Get.to(Commander());
+                          //
+                          Map<dynamic, dynamic> m =
+                              profileControllers.infosPerso;
+
+                          if (m['numero'] != null) {
+                            Get.to(Commander());
+                          } else {
+                            Get.snackbar(
+                              "Compte",
+                              "Vous n'avez pas un compte veuilliez en créer dans profil.",
+                              duration: Duration(seconds: 5),
+                            );
+                          }
                         }
                       },
                       child: Text("Passer la commander"),

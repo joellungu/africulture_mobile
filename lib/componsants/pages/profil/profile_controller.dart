@@ -8,11 +8,11 @@ class ProfileControllers extends GetxController {
   RxBool affichePas = true.obs;
   checkAffiche() {
     final box = GetStorage();
-    print(box.read<Map<dynamic, dynamic>>("utilisateur"));
+    //box.write("utilisateur", {});
+    var o = box.read("utilisateur");
+    //print(o);
     //
-    infosPerso.value = box.read<Map<dynamic, dynamic>>("utilisateur") != null
-        ? box.read<Map<dynamic, dynamic>>("utilisateur")!
-        : {};
+    infosPerso.value = o['numero'] != null ? o : {};
   }
 
   removeInfos() {

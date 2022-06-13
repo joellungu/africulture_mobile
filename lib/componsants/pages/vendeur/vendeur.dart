@@ -1,5 +1,7 @@
+import 'package:africulture_mobile/componsants/pages/profil/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'formulaire_adhesion/formulaire_adhesion.dart';
 import 'mension_legal.dart';
@@ -8,6 +10,7 @@ import 'vendeur_controller.dart';
 
 enum ChoixCompteVendeur { ent, ind }
 bool typeVendeur = true;
+RxBool suspendre = false.obs;
 
 class Vendeur extends StatelessWidget {
   PageController pageController = PageController();
@@ -47,7 +50,7 @@ class Vendeur extends StatelessWidget {
         ),
       ),
       body: Obx(
-        () => vendeurController.aUnCompte.value
+        () => !vendeurController.suspendu.value
             ? ProfilVendeur()
             : Column(
                 children: [

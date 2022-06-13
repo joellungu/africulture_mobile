@@ -13,15 +13,14 @@ class CategorieController extends GetxController {
   RxList images = RxList([]);
   //
   getCategorie() {
-    //
+    /*
+    */
     listecat.value.add({"icon": Icons.art_track, "titre": "Art"});
     listecat.value.add({"icon": Icons.snowshoeing, "titre": "Vetements"});
-    listecat.value.add({"icon": Icons.shield_rounded, "titre": "Gastronomie"});
-    listecat.value.add({"icon": Icons.add_circle, "titre": "Nourriture"});
-    listecat.value.add({"icon": Icons.card_giftcard, "titre": "Cosmetique"});
-    listecat.value.add({"icon": Icons.collections_sharp, "titre": "Mobilier"});
-    listecat.value.add({"icon": Icons.book_outlined, "titre": "Décoration"});
-    listecat.value.add({"icon": Icons.shield_rounded, "titre": "Autre"});
+    listecat.value.add({"icon": Icons.shield_rounded, "titre": "Alimentaire"});
+    listecat.value.add({"icon": Icons.add_circle, "titre": "Mobilier"});
+    listecat.value.add({"icon": Icons.card_giftcard, "titre": "Décoration"});
+    listecat.value.add({"icon": Icons.collections_sharp, "titre": "Autre"});
   }
 
   //

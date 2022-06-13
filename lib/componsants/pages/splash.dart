@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:africulture_mobile/componsants/pages/panier/commander/commander.dart';
+import 'package:africulture_mobile/componsants/pages/panier/expedition/expedition.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -17,6 +19,7 @@ class Splash extends StatelessWidget {
       }
       //
       Get.off(() => Principale());
+      // Principale());//Commander
     });
     //
     //return splashController.getLoger();

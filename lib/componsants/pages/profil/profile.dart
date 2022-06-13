@@ -8,6 +8,7 @@ import '../../widgets/noter.dart';
 import '../favorit/favorit.dart';
 import '../historique_ommande/historique_commande.dart';
 import '../login/login.dart';
+import 'mesadresses/mesadresse.dart';
 import 'profil_infos.dart/profil_infos.dart';
 import 'profile_controller.dart';
 import 'propos.dart';
@@ -17,15 +18,15 @@ class Profil extends StatelessWidget {
 
   SplashController splashController = Get.find();
 
-  Profil() {
-    profileController.checkAffiche();
-  }
+  //Profil() {
+  //profileController.checkAffiche();
+  //}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profil"),
+        title: const Text("Profil"),
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
@@ -38,16 +39,17 @@ class Profil extends StatelessWidget {
             ),
           ),
         ),
-      ),
+      ), //
       body: ListView(
         padding: EdgeInsets.all(10),
         children: [
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Obx(
             () => ListTile(
               onTap: () {
+                print(profileController.infosPerso);
                 if (profileController.infosPerso['nom'] == null) {
                   //splashController.homologin.value = false;
                   Get.to(Login());
@@ -61,25 +63,24 @@ class Profil extends StatelessWidget {
                   : Text("${profileController.infosPerso['nom']}"),
               subtitle: profileController.infosPerso['nom'] == null
                   ? Container()
-                  : Text(
-                      "${profileController.infosPerso['postnom']} ${profileController.infosPerso['prenom']}"),
+                  : Text("${profileController.infosPerso['numero']} "),
               trailing: Icon(
                 Icons.arrow_forward_ios,
                 color: Colors.grey.shade700,
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
-          Text(
+          const Text(
             "Réglage générale",
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           ListTile(
@@ -114,7 +115,7 @@ class Profil extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text("4 "),
+                  Text(""),
                   Text("Articles"),
                   Icon(
                     Icons.arrow_forward_ios,
@@ -144,6 +145,27 @@ class Profil extends StatelessWidget {
                         Get.snackbar("Notification", mess);
                       },
                     ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              Get.to(Mesadresses());
+            },
+            leading: Icon(Icons.contact_page_outlined),
+            title: Text("Mes adresses"),
+            trailing: Container(
+              width: 100,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  //Text("4 "),
+                  //Text("Articles"),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.grey.shade700,
                   )
                 ],
               ),
@@ -268,7 +290,7 @@ class Profil extends StatelessWidget {
                 Icons.arrow_forward_ios,
                 color: Colors.grey.shade700,
               )),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
         ],

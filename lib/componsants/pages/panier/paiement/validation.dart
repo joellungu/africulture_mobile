@@ -1,0 +1,161 @@
+import 'package:africulture_mobile/componsants/pages/panier/adresse/adresse_controller.dart';
+import 'package:africulture_mobile/componsants/pages/panier/expedition/expedition_controller.dart';
+import 'package:africulture_mobile/componsants/pages/panier/panier_controller.dart';
+import 'package:africulture_mobile/componsants/pages/profil/profile_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+
+import 'validation_controller.dart';
+
+class Validation extends StatelessWidget {
+  //
+  ValidationController validationController = Get.find();
+  AdresseController adresseController = Get.find();
+  PanierController panierController = Get.find();
+  ExpeditionController expeditionController = Get.find();
+  //
+  var formKey = GlobalKey<FormState>();
+  final code = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Validation",
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: <Color>[Colors.yellow.shade700, Colors.black],
+            ),
+          ),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Form(
+          key: formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                height: 70,
+                width: 200,
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        decoration: const InputDecoration(
+                            hintText: 'Code ou telephone',
+                            labelText: 'Code ou telephone'),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Veuillez saisir votre Nom';
+                          }
+
+                          return null;
+                        },
+                        controller: code,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.remove_red_eye_outlined),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              InkWell(
+                onTap: () {
+                  if (formKey.currentState!.validate()) {
+                    Get.dialog(
+                      const Center(
+                        child: SizedBox(
+                          height: 30,
+                          width: 30,
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                      name: "Attente...",
+                    );
+                    //
+                    final box = GetStorage();
+                    ProfileControllers profileController = Get.find();
+
+                    Map<String, dynamic> c = {
+                      "numero": "${profileController.infosPerso['numero']}",
+                      "nom": "${profileController.infosPerso['nom']}",
+                      "date": "${DateTime.now()}",
+                      "pays": "${adresseController.pays.value}",
+                      "code": "${adresseController.codePays.value}",
+                      "confirmation": false,
+                      "expresse": expeditionController.express.value,
+                      "expedier": false,
+                      "panier": {"liste": panierController.listeProduit},
+                      "adresse": {
+                        "m_adresse": adresseController.m_adresse.value,
+                        "titre": adresseController.titre.value,
+                        "pays": adresseController.pays.value,
+                        "codePays": adresseController.codePays.value,
+                        "etatProvince": adresseController.etatProvince.value,
+                        "ville": adresseController.ville.value,
+                        "commArrond": adresseController.commArrond.value,
+                        "quartier": adresseController.quartier.value,
+                        "avenue": adresseController.avenue.value,
+                        "numero": adresseController.numero.value,
+                        "codePostal": adresseController.codePostal.value
+                      },
+                    };
+
+                    print(adresseController.codePostal);
+
+                    panierController.listeProduit.forEach((element) {
+                      print(element);
+                    });
+
+                    //
+                    validationController.loadProduit(code.text, c);
+                    //Get.back();
+                  }
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 40,
+                  child: Text(
+                    "Paier",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 15,
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: <Color>[Colors.yellow.shade700, Colors.black],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

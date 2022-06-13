@@ -3,9 +3,12 @@ import 'dart:convert';
 import 'package:africulture_mobile/utile/utils.dart';
 import 'package:get/get.dart';
 
-class ProduitController extends GetxController {
+class ProduitController extends GetxController
+    with StateMixin<Map<String, dynamic>> {
   //
   RxInt load = 0.obs;
+  RxString ch = "".obs;
+  RxString pt = "".obs;
   //
   RxList listeImages = [].obs;
   //

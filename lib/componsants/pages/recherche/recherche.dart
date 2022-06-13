@@ -133,7 +133,7 @@ class Recherche extends StatelessWidget {
                 childAspectRatio: 0.5,
                 children: List.generate(
                   5,
-                  (index) => CarteProduite(true, index + 9),
+                  (index) => CarteProduite({}, true),
                 ),
               ),
             )

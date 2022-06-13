@@ -1,3 +1,5 @@
+import 'package:africulture_mobile/componsants/pages/panier/adresse/adresse_controller.dart';
+import 'package:africulture_mobile/componsants/pages/panier/paiement/validation_controller.dart';
 import 'package:africulture_mobile/componsants/pages/produits/produit_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +15,7 @@ import 'componsants/pages/favorit/favorit_controller.dart';
 import 'componsants/pages/historique_ommande/historique_commande_controller.dart';
 import 'componsants/pages/login/login_controller.dart';
 import 'componsants/pages/panier/commander/commander_controller.dart';
+import 'componsants/pages/panier/expedition/expedition_controller.dart';
 import 'componsants/pages/panier/panier_controller.dart';
 import 'componsants/pages/profil/profile_controller.dart';
 import 'componsants/pages/recherche/recherche_controller.dart';
@@ -25,24 +28,26 @@ import 'utile/langues/traduction.dart';
 void main() async {
   await GetStorage.init();
   //
-  SplashController splashController = Get.put(SplashController());
-  LoginController loginController = Get.put(LoginController());
+  Get.put(SplashController());
+  Get.put(LoginController());
   CategorieController categorieController = Get.put(CategorieController());
-  PanierController panierController = Get.put(PanierController());
-  AccueilController accueilController = Get.put(AccueilController());
+  Get.put(PanierController());
+  Get.put(AccueilController());
   ProfileControllers profileController = Get.put(ProfileControllers());
-  CommanderController commanderController = Get.put(CommanderController());
-  RechercheController rechercheController = Get.put(RechercheController());
-  VendeurController vendeurController = Get.put(VendeurController());
-  FavoritController favoritController = Get.put(FavoritController());
-  HistoriqueCommandeController historiqueCommandeController =
-      Get.put(HistoriqueCommandeController());
-  FormulaireAdhesionController formulaireAdhesionController =
-      Get.put(FormulaireAdhesionController());
+  Get.put(CommanderController());
+  Get.put(RechercheController());
+  Get.put(VendeurController());
+  Get.put(FavoritController());
+  Get.put(HistoriqueCommandeController());
+  Get.put(FormulaireAdhesionController());
+  Get.put(AdresseController());
+  Get.put(ValidationController());
   //
-  CreationController creationController = Get.put(CreationController());
-  ProduitController produitController = Get.put(ProduitController());
-  ComingController comingController = Get.put(ComingController());
+  Get.put(CreationController());
+  Get.put(ProduitController());
+  Get.put(ComingController());
+  //
+  Get.put(ExpeditionController());
   //
   categorieController.getCategorie();
   profileController.checkAffiche();

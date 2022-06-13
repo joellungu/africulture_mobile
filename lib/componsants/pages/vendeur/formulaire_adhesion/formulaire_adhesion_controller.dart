@@ -8,7 +8,7 @@ import '../vendeur_controller.dart';
 class FormulaireAdhesionController extends GetxController {
   RxDouble avancement = 0.0.obs;
   RxString titreProfile = "Titre_profil_vendeur".obs;
-  RxBool aUnCompte = false.obs;
+  //RxBool aUnCompte = false.obs;
   VendeurController vendeurController = Get.find();
   final box = GetStorage();
   //

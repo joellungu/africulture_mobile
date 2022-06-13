@@ -1,3 +1,4 @@
+import 'package:africulture_mobile/utile/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -5,8 +6,27 @@ import '../pages/panier/panier_controller.dart';
 
 class CartePanier extends StatelessWidget {
   RxInt v = 1.obs;
+  int index;
+  bool l = true;
+  RxDouble prix = RxDouble(0); //
+  RxDouble resultat = RxDouble(0);
 
   PanierController panierController = Get.find();
+
+  CartePanier(this.index, this.l, int quant) {
+    prix = RxDouble(panierController.listeProduit[index]['prix']);
+    resultat = RxDouble(panierController.listeProduit[index]['prix']);
+    v.value = quant;
+  }
+
+  /*
+  "id": "${p['id']}",
+  "image":
+      "produit/image/${p['id']}/img0",
+  "devise": "${p['deviseMar']}",
+  "prix": "${p['prixMar']}",
+  "ch": quantite,
+  */
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +55,8 @@ class CartePanier extends StatelessWidget {
             Expanded(
               flex: 3,
               child: Container(
-                color: Colors.grey.shade100,
+                child: Image.network(
+                    "${Utils.url}/${panierController.listeProduit[index]['image']}"),
               ),
             ),
             Expanded(
@@ -51,7 +72,7 @@ class CartePanier extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "Sleep Double Split Maxi Dress",
+                        "${panierController.listeProduit[index]['titre']}",
                         softWrap: true,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -59,36 +80,48 @@ class CartePanier extends StatelessWidget {
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("\$120.50"),
+                      child: Obx(
+                        () => Text(
+                            "${panierController.listeProduit[index]['devise']} ${resultat.value}"),
+                      ),
                     ),
                     SizedBox(
                       height: 5,
                     ),
-                    Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          height: 30,
-                          width: 50,
-                          alignment: Alignment.centerLeft,
-                          child: DropdownButtonHideUnderline(
-                              child: Obx(
-                            () => DropdownButton(
-                              value: v.value,
-                              items: List.generate(
-                                11,
-                                (index) => DropdownMenuItem(
-                                  child: Text("${index + 1}"),
-                                  value: index + 1,
+                    l
+                        ? Align(
+                            alignment: Alignment.centerLeft,
+                            child: Container(
+                              height: 30,
+                              width: 50,
+                              alignment: Alignment.centerLeft,
+                              child: DropdownButtonHideUnderline(
+                                  child: Obx(
+                                () => DropdownButton(
+                                  value: v.value,
+                                  items: List.generate(
+                                    11,
+                                    (index) => DropdownMenuItem(
+                                      child: Text("${index + 1}"),
+                                      value: index + 1,
+                                    ),
+                                  ),
+                                  onChanged: (Object? value) {
+                                    v.value = value as int;
+                                    resultat.value = prix.value * v.value;
+                                    panierController.listeProduit[index]
+                                        ['quantite'] = v.value;
+                                    panierController.listeProduit[index]
+                                        ['prix'] = resultat.value;
+                                  },
                                 ),
-                              ),
-                              onChanged: (Object? value) {
-                                v.value = value as int;
-                              },
+                              )),
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: Colors.grey.shade300)),
                             ),
-                          )),
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey.shade300)),
-                        )),
+                          )
+                        : Container(),
                   ],
                 ),
               ),

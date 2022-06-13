@@ -1,8 +1,11 @@
+import 'package:africulture_mobile/componsants/pages/panier/listage/listage.dart';
+import 'package:africulture_mobile/componsants/pages/panier/paiement/paiement.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../widgets/carte_panier.dart';
 import '../adresse/adresse.dart';
+import '../expedition/expedition.dart';
 import '../panier_controller.dart';
 import 'commander_controller.dart';
 
@@ -10,7 +13,6 @@ class Commander extends StatelessWidget {
   PageController pageController = PageController();
 
   CommanderController commanderController = Get.find();
-  PanierController panierController = Get.find();
 
   double conte = 0;
   int i = 0;
@@ -72,74 +74,13 @@ class Commander extends StatelessWidget {
             child: PageView(
               controller: pageController,
               children: [
-                Adresse(),
-                Container(
-                  color: Colors.white,
-                ),
-                Obx(
-                  () => ListView(
-                    padding: EdgeInsets.only(
-                      top: 20,
-                    ),
-                    children: List.generate(
-                        panierController.listeProduit.length, (index) {
-                      return CartePanier();
-                    }),
-                  ),
-                ),
-                Container(
-                  color: Colors.yellow,
-                )
+                Adresse(pageController, titres),
+                Expedition(pageController, titres),
+                Listage(pageController, titres),
+                Paiement(pageController, titres),
               ],
             ),
           ),
-          Container(
-            height: 40,
-            padding: const EdgeInsets.only(
-              left: 10,
-              right: 10,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    if (i > 0) {
-                      print("Avant: $i");
-                      i--;
-                      print("Après: $i");
-                      commanderController.avancement.value =
-                          commanderController.avancement.value - conte;
-                      commanderController.titre.value = titres[i];
-                      pageController.previousPage(
-                        duration: Duration(seconds: 1),
-                        curve: Curves.ease,
-                      );
-                    }
-                  },
-                  child: const Text("Retour"),
-                ),
-                TextButton(
-                  onPressed: () {
-                    if (i <= 2) {
-                      print("Avant: $i");
-                      i++;
-                      print("Après: $i");
-                      commanderController.avancement.value =
-                          commanderController.avancement.value + conte;
-                      commanderController.titre.value = titres[i];
-                      pageController.nextPage(
-                        duration: Duration(seconds: 1),
-                        curve: Curves.ease,
-                      );
-                    }
-                    //
-                  },
-                  child: const Text("Suivant"),
-                ),
-              ],
-            ),
-          )
         ],
       ),
     );

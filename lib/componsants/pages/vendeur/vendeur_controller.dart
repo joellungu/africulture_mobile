@@ -29,7 +29,10 @@ class VendeurController extends GetxController {
   VendeurConnexion vendeurConnexion = VendeurConnexion();
   //
   verificationCompte() {
+    //box.write("profil_vendeur", null);
     var vendeurInfos = box.read("profil_vendeur");
+    print(vendeurInfos);
+    print("____________________________: $vendeurInfos");
     if (vendeurInfos != null) {
       aUnCompte.value = true; //1
       suspendu.value = vendeurInfos["suspendre"];

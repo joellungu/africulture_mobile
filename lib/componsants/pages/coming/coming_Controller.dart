@@ -4,9 +4,11 @@ import 'package:africulture_mobile/utile/utils.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-class ComingController extends GetxController {
+class ComingController extends GetxController
+    with StateMixin<Map<String, dynamic>> {
   //
   final box = GetStorage();
+
   //
   RxInt loadPub = 0.obs;
   RxList loadPubListe = RxList();
@@ -20,6 +22,8 @@ class ComingController extends GetxController {
   RxInt loadPro = 0.obs;
   RxList loadProListe = RxList();
 
+  Map<String, dynamic> coming = {};
+
   //
   ComingConnexion comingConnexion = ComingConnexion();
   //
@@ -29,6 +33,7 @@ class ComingController extends GetxController {
     loadNListe = RxList();
     //
     loadN.value = 0;
+    //print("avant:  ${loadN.value}");
     //
     Response r = await comingConnexion.nouvelleP();
     //
@@ -37,10 +42,14 @@ class ComingController extends GetxController {
       loadNListe.value = jsonDecode(r.bodyString!);
       loadNListe.value = loadNListe.reversed.toList();
       loadN.value = 1;
+      //print("avant1:  ${loadNListe.value}");
+      coming['nouveauP'] = loadNListe.value;
     } else {
       //
       loadN.value = 2;
+      //print("avant2:  ${loadN.value}");
     }
+    change(coming, status: RxStatus.success());
   }
 
   void meilleurV() async {
@@ -49,12 +58,14 @@ class ComingController extends GetxController {
     //
     if (r.statusCode == 200 || r.statusCode == 201) {
       //
-      loadVListe = jsonDecode(r.bodyString!);
+      loadVListe.value = jsonDecode(r.bodyString!);
       loadV.value = 1;
+      coming['meilleurV'] = loadVListe.value;
     } else {
       //
       loadN.value = 0;
     }
+    change(coming, status: RxStatus.success());
   }
 
   void promotion() async {
@@ -63,12 +74,14 @@ class ComingController extends GetxController {
     //
     if (r.statusCode == 200 || r.statusCode == 201) {
       //
-      loadProListe = jsonDecode(r.bodyString!);
+      loadProListe.value = jsonDecode(r.bodyString!);
       loadPro.value = 1;
+      coming['promotion'] = loadProListe.value;
     } else {
       //
       loadN.value = 0;
     }
+    change(coming, status: RxStatus.success());
   }
 
   void produitPub() async {
@@ -77,12 +90,26 @@ class ComingController extends GetxController {
     //
     if (r.statusCode == 200 || r.statusCode == 201) {
       //
-      loadPubListe = jsonDecode(r.bodyString!);
+      loadPubListe.value = jsonDecode(r.bodyString!);
       loadPub.value = 1;
+      coming['produitP'] = loadPubListe.value;
     } else {
       //
       loadN.value = 0;
     }
+    change(coming, status: RxStatus.success());
+  }
+
+  void requete() {
+    //
+    produitPub();
+    //
+    promotion();
+    //
+    meilleurV();
+    //
+    nouvelleP();
+    //
   }
 }
 

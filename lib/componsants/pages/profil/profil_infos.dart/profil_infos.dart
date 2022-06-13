@@ -50,51 +50,7 @@ class ProfilInfos extends StatelessWidget {
             ],
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text.rich(
-                TextSpan(text: "Postnom ", children: [
-                  TextSpan(
-                    text: "${profileController.infosPerso['postnom']}",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  )
-                ]),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.edit,
-                ),
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text.rich(
-                TextSpan(text: "Prenom ", children: [
-                  TextSpan(
-                    text: "${profileController.infosPerso['prenom']}",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  )
-                ]),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.edit,
-                ),
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text.rich(
                 TextSpan(text: "Numero ", children: [
@@ -107,82 +63,6 @@ class ProfilInfos extends StatelessWidget {
                   )
                 ]),
               ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.edit,
-                ),
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text.rich(
-                TextSpan(text: "Email ", children: [
-                  TextSpan(
-                    text: "${profileController.infosPerso['email']}",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  )
-                ]),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.edit,
-                ),
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text.rich(
-                TextSpan(text: "Date de naissance ", children: [
-                  TextSpan(
-                    text: "${profileController.infosPerso['dateNaissance']}",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  )
-                ]),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.edit,
-                ),
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text.rich(
-                TextSpan(
-                  text: "MDP ",
-                  children: [
-                    TextSpan(
-                      ///${profileController.infosPerso['nom']}
-                      text: "************",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.edit,
-                ),
-              )
             ],
           ),
         ],
