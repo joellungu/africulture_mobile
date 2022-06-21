@@ -22,7 +22,7 @@ class Coming extends GetView<ComingController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Afri Culture",
         ),
         backgroundColor: Colors.white,

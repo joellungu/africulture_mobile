@@ -16,23 +16,23 @@ class Categories extends StatefulWidget {
 class _Categories extends State<Categories> with TickerProviderStateMixin {
   CategorieController categorieController = Get.find();
 
+  late TabController controller = TabController(
+      length: categorieController.listecat.value.length, vsync: this);
+
+  @override
+  void initState() {
+    //
+    controller = TabController(
+        length: categorieController.listecat.value.length, vsync: this);
+    //
+    super.initState();
+    //
+  }
+
   //
   @override
   Widget build(BuildContext context) {
     //categorieController.getCategorie();
-
-    late TabController controller = TabController(
-        length: categorieController.listecat.value.length, vsync: this);
-
-    @override
-    void initState() {
-      //
-      controller = TabController(
-          length: categorieController.listecat.value.length, vsync: this);
-      //
-      super.initState();
-      //
-    }
 
     return Scaffold(
       appBar: AppBar(

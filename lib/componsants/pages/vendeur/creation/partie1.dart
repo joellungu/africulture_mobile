@@ -97,8 +97,8 @@ class Partie1 extends StatelessWidget {
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
-                      hintText: 'Poid unitaire en Mg',
-                      labelText: 'Poid unitaire en Mg'),
+                      hintText: 'Poid unitaire en g',
+                      labelText: 'Poid unitaire en g'),
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Ce champ est obligatoire';

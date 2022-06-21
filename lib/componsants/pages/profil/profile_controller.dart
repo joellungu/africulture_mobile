@@ -6,13 +6,17 @@ class ProfileControllers extends GetxController {
   RxMap infosPerso = {}.obs;
   RxMap infosEnt = {}.obs;
   RxBool affichePas = true.obs;
+  //Cette fonction check si l'utilisateur a déjà un compte...
   checkAffiche() {
     final box = GetStorage();
     //box.write("utilisateur", {});
     var o = box.read("utilisateur");
     //print(o);
     //
-    infosPerso.value = o['numero'] != null ? o : {};
+    if (box.read("utilisateur") != null) {
+      infosPerso.value = o;
+      //infosPerso = o;
+    }
   }
 
   removeInfos() {

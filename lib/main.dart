@@ -1,6 +1,7 @@
 import 'package:africulture_mobile/componsants/pages/panier/adresse/adresse_controller.dart';
 import 'package:africulture_mobile/componsants/pages/panier/paiement/validation_controller.dart';
 import 'package:africulture_mobile/componsants/pages/produits/produit_controller.dart';
+import 'package:africulture_mobile/componsants/pages/vendeur/profil_vendeur/profile_vendeur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -34,9 +35,10 @@ void main() async {
   Get.put(PanierController());
   Get.put(AccueilController());
   ProfileControllers profileController = Get.put(ProfileControllers());
+  //VendeurController vendeurController = Get.put(VendeurController());
+  Get.put(VendeurController());
   Get.put(CommanderController());
   Get.put(RechercheController());
-  Get.put(VendeurController());
   Get.put(FavoritController());
   Get.put(HistoriqueCommandeController());
   Get.put(FormulaireAdhesionController());

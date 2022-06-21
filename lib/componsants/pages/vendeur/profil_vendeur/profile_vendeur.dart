@@ -8,16 +8,17 @@ import '../creation/creation_produit.dart';
 import '../vendeur_controller.dart';
 
 class ProfilVendeur extends StatelessWidget {
-  ProfileControllers profileController = Get.find();
+  //vendeurControllers vendeurController = Get.find();
   //
   VendeurController vendeurController = Get.find();
   //
   @override
   Widget build(BuildContext context) {
+    //print("Info G: ${vendeurController.infosEnt.value}");
     return ListView(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       children: [
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         ListTile(
@@ -44,13 +45,14 @@ class ProfilVendeur extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        vendeurController.suspendu.value
+        // ignore: unrelated_type_equality_checks
+        vendeurController.infosEnt.value['statut'] == 'starter'
             ? Padding(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text.rich(
+                    const Text.rich(
                       TextSpan(
                         text: "Africulture \n",
                         style: TextStyle(
@@ -115,98 +117,170 @@ class ProfilVendeur extends StatelessWidget {
                   ],
                 ),
               )
-            : Column(
-                children: [
-                  SizedBox(
-                    height: 10,
-                  ),
-                  ListTile(
-                    onTap: () {
-                      Get.to(MesProduits());
-                    },
-                    leading: Icon(Icons.shopping_cart),
-                    title: Text("vos_produits"),
-                    trailing: Container(
-                      width: 100,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text("4 "),
-                          Text("Articles"),
-                          Icon(
+            : vendeurController.infosEnt.value['statut'] == 'accepté'
+                ? Column(
+                    children: [
+                      SizedBox(
+                        height: 10,
+                      ),
+                      ListTile(
+                        onTap: () {
+                          Get.to(MesProduits());
+                        },
+                        leading: Icon(Icons.shopping_cart),
+                        title: Text("vos_produits"),
+                        trailing: Container(
+                          width: 100,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text("4 "),
+                              Text("Articles"),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                color: Colors.grey.shade700,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.shopping_basket_outlined),
+                        title: Text("vos_commandes"),
+                        trailing: Container(
+                          width: 100,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text("4 "),
+                              Text("Articles"),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                color: Colors.grey.shade700,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      ListTile(
+                        onTap: () {
+                          Get.to(CreationProduit());
+                        },
+                        leading: Icon(Icons.add_box_outlined),
+                        title: Text("ajouter_un_produit"),
+                        trailing: Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.grey.shade700,
+                        ),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.email_outlined),
+                        title: Text("Mes notifications"),
+                        trailing: Container(
+                          width: 100,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text("14"),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                color: Colors.grey.shade700,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      ListTile(
+                          onTap: (() => Get.to(Propos())),
+                          leading: Icon(Icons.call),
+                          title: Text("Contactez nous"),
+                          trailing: Icon(
                             Icons.arrow_forward_ios,
                             color: Colors.grey.shade700,
-                          )
-                        ],
+                          )),
+                      SizedBox(
+                        height: 10,
                       ),
+                    ],
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        const Text.rich(
+                          TextSpan(
+                            text: "Africulture \n",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                            children: [
+                              TextSpan(
+                                text:
+                                    "Si vous voyez ce message ce que votre boutique a été momentanement bloqué, veuillez contacter le service de AfricCulture pour plus d'information.",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        InkWell(
+                          onTap: () {},
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 40,
+                            child: Text(
+                              "En savoir plus",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 15,
+                              ),
+                            ),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: <Color>[
+                                  Colors.yellow.shade700,
+                                  Colors.black
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        Obx(
+                          () => vendeurController.check.value
+                              ? Container(
+                                  height: 40,
+                                  width: 40,
+                                  child: CircularProgressIndicator(),
+                                )
+                              : Text(
+                                  "Examen du dossier en cours...",
+                                ),
+                        ),
+                      ],
                     ),
                   ),
-                  ListTile(
-                    leading: Icon(Icons.shopping_basket_outlined),
-                    title: Text("vos_commandes"),
-                    trailing: Container(
-                      width: 100,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text("4 "),
-                          Text("Articles"),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.grey.shade700,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  ListTile(
-                    onTap: () {
-                      Get.to(CreationProduit());
-                    },
-                    leading: Icon(Icons.add_box_outlined),
-                    title: Text("ajouter_un_produit"),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Colors.grey.shade700,
-                    ),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.email_outlined),
-                    title: Text("Mes notifications"),
-                    trailing: Container(
-                      width: 100,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text("14"),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.grey.shade700,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  ListTile(
-                      onTap: (() => Get.to(Propos())),
-                      leading: Icon(Icons.call),
-                      title: Text("Contactez nous"),
-                      trailing: Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.grey.shade700,
-                      )),
-                  SizedBox(
-                    height: 10,
-                  ),
-                ],
-              ),
       ],
     );
   }
 }
 
 class DetailsProfil extends StatelessWidget {
-  ProfileControllers profileController = Get.find();
+  VendeurController vendeurController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -234,7 +308,7 @@ class DetailsProfil extends StatelessWidget {
               Text.rich(
                 TextSpan(text: "Nom ", children: [
                   TextSpan(
-                    text: "${profileController.infosEnt['nom']}",
+                    text: "${vendeurController.infosEnt['nom']}",
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w700,
@@ -254,9 +328,9 @@ class DetailsProfil extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text.rich(
-                TextSpan(text: "Postnom ", children: [
+                TextSpan(text: "Adresse ", children: [
                   TextSpan(
-                    text: "${profileController.infosEnt['postnom']}",
+                    text: "${vendeurController.infosEnt['adresse']}",
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w700,
@@ -276,9 +350,9 @@ class DetailsProfil extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text.rich(
-                TextSpan(text: "Prenom ", children: [
+                TextSpan(text: "centreAppel ", children: [
                   TextSpan(
-                    text: "${profileController.infosEnt['prenom']}",
+                    text: "${vendeurController.infosEnt['centreAppel']}",
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w700,
@@ -298,9 +372,9 @@ class DetailsProfil extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text.rich(
-                TextSpan(text: "Numero ", children: [
+                TextSpan(text: "email ", children: [
                   TextSpan(
-                    text: "${profileController.infosEnt['numero']}",
+                    text: "${vendeurController.infosEnt['email']}",
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w700,
@@ -320,9 +394,9 @@ class DetailsProfil extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text.rich(
-                TextSpan(text: "Email ", children: [
+                TextSpan(text: "type ", children: [
                   TextSpan(
-                    text: "${profileController.infosEnt['email']}",
+                    text: "${vendeurController.infosEnt['type']}",
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w700,
@@ -342,9 +416,9 @@ class DetailsProfil extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text.rich(
-                TextSpan(text: "Date de naissance ", children: [
+                TextSpan(text: "rccm ", children: [
                   TextSpan(
-                    text: "${profileController.infosEnt['dateNaissance']}",
+                    text: "${vendeurController.infosEnt['rccm']}",
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w700,
@@ -363,13 +437,15 @@ class DetailsProfil extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text.rich(
+              Text.rich(
                 TextSpan(
-                  text: "MDP ",
+                  text: "Statut ",
                   children: [
                     TextSpan(
-                      ///${profileController.infosPerso['nom']}
-                      text: "************",
+                      ///${vendeurController.infosPerso['nom']}
+                      text: vendeurController.infosEnt['suspendre']
+                          ? "En suspend"
+                          : "Actif",
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w700,

@@ -10,8 +10,16 @@ class VendeurController extends GetxController {
   RxBool aUnCompte = false.obs;
   RxBool suspendu = true.obs;
   RxBool check = RxBool(true); //Par defaut je check
+  RxMap infosEnt = RxMap();
   //
   final box = GetStorage();
+  @override
+  onInit() {
+    if (box.read("profil_vendeur") != null) {
+      infosEnt.value = box.read("profil_vendeur");
+    }
+  }
+
   //
   @override
   void onClose() {
@@ -47,13 +55,15 @@ class VendeurController extends GetxController {
     if (rep.statusCode == 201 || rep.statusCode == 200) {
       //
       var vendeurInfos = box.read("profil_vendeur");
-      vendeurInfos["suspendre"] = rep.body!;
+      vendeurInfos = rep.body;
       box.write("profil_vendeur", vendeurInfos);
       //
-      print("${rep.body}");
-      check.value = false;
+      print("==${rep.body}");
+      //print("==-${vendeurInfos['suspendre']}");
+      check.value = vendeurInfos['suspendre']; //false;
     } else {
-      check.value = false;
+      var vendeurInfos = box.read("profil_vendeur");
+      check.value = vendeurInfos[suspendu];
     }
   }
 

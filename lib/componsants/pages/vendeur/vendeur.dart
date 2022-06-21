@@ -1,8 +1,5 @@
-import 'package:africulture_mobile/componsants/pages/profil/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-
 import 'formulaire_adhesion/formulaire_adhesion.dart';
 import 'mension_legal.dart';
 import 'profil_vendeur/profile_vendeur.dart';
@@ -26,7 +23,8 @@ class Vendeur extends StatelessWidget {
   //
   @override
   Widget build(BuildContext context) {
-    conte = MediaQuery.of(context).size.width / 5;
+    //print("je suis ou pas suspendu: ${vendeurController.suspendu.value}");
+    conte = MediaQuery.of(context).size.width / 4;
 
     //
     return Scaffold(
@@ -50,11 +48,85 @@ class Vendeur extends StatelessWidget {
         ),
       ),
       body: Obx(
-        () => !vendeurController.suspendu.value
-            ? ProfilVendeur()
-            : Column(
-                children: [
-                  /*
+        () => !vendeurController.suspendu.value &&
+                vendeurController.infosEnt.value['statut'] == 'bloquer'
+            ? Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    const Text.rich(
+                      TextSpan(
+                        text: "Africulture \n",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                        children: [
+                          TextSpan(
+                            text:
+                                "Si vous voyez ce message ce que votre boutique a été momentanement bloqué, veuillez contacter le service de AfricCulture pour plus d'information.",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 40,
+                        child: Text(
+                          "En savoir plus",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 15,
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: <Color>[
+                              Colors.yellow.shade700,
+                              Colors.black
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Obx(
+                      () => vendeurController.check.value
+                          ? Container(
+                              height: 40,
+                              width: 40,
+                              child: CircularProgressIndicator(),
+                            )
+                          : Text(
+                              "Examen du dossier en cours...",
+                            ),
+                    ),
+                  ],
+                ),
+              )
+            : !vendeurController.suspendu.value &&
+                    vendeurController.infosEnt.value['statut'] == 'accepté'
+                ? ProfilVendeur()
+                : Column(
+                    children: [
+                      /*
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -69,194 +141,193 @@ class Vendeur extends StatelessWidget {
             ],
           ),
           */
-                  Expanded(
-                    flex: 1,
-                    child: PageView(
-                      controller: pageController,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text.rich(
-                                TextSpan(
-                                  text: "Africulture ",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                  ),
-                                  children: [
+                      Expanded(
+                        flex: 1,
+                        child: PageView(
+                          controller: pageController,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text.rich(
                                     TextSpan(
-                                      text:
-                                          "vous permet de mettre en vente vos produits sur notre platforme pour vendre dans le monde entier. ",
+                                      text: "Africulture ",
                                       style: TextStyle(
                                         color: Colors.black,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
                                       ),
-                                    ),
-                                    TextSpan(
-                                      text:
-                                          "Si célà vous interesse nous vous invitons à lire et à accepter les regles et conditions, à remplire les formulaires d'hadesion et de soumettre votre démande à nos services. commancer dans la page suivantre.",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 13,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  int v = pageController.initialPage;
-                                  print("page int: $v");
-                                  pageController.nextPage(
-                                    duration: Duration(seconds: 1),
-                                    curve: Curves.bounceIn,
-                                  );
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 40,
-                                  child: Text(
-                                    "Commencer",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                      colors: <Color>[
-                                        Colors.yellow.shade700,
-                                        Colors.black
+                                      children: [
+                                        TextSpan(
+                                          text:
+                                              "vous permet de mettre en vente vos produits sur notre platforme pour vendre dans le monde entier. ",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text:
+                                              "Si célà vous interesse nous vous invitons à lire et à accepter les regles et conditions, à remplire les formulaires d'hadesion et de soumettre votre démande à nos services. commancer dans la page suivantre.",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 13,
+                                          ),
+                                        )
                                       ],
                                     ),
                                   ),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  //
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        content: Loader(),
+                                  InkWell(
+                                    onTap: () {
+                                      int v = pageController.initialPage;
+                                      print("page int: $v");
+                                      pageController.nextPage(
+                                        duration: Duration(seconds: 1),
+                                        curve: Curves.bounceIn,
                                       );
-                                      /*Material(
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      height: 40,
+                                      child: Text(
+                                        "Commencer",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                          colors: <Color>[
+                                            Colors.yellow.shade700,
+                                            Colors.black
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      //
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            content: Loader(),
+                                          );
+                                          /*Material(
                                         color: Colors.transparent,
                                         child: Center(
                                           child: Loader(),
                                         ),
                                       );
                                       */
+                                        },
+                                      );
                                     },
-                                  );
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 40,
-                                  child: Text(
-                                    "Déjà un compte ?",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                      colors: <Color>[
-                                        Colors.yellow.shade700,
-                                        Colors.black
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text.rich(
-                                TextSpan(
-                                  text: "Africulture ",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text:
-                                          "Offres des services differents selon que vous etes une entreprise ou un individu. Faite un choix et cliquez sur continuer.",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 13,
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      height: 40,
+                                      child: Text(
+                                        "Déjà un compte ?",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                          colors: <Color>[
+                                            Colors.yellow.shade700,
+                                            Colors.black
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  )
+                                ],
                               ),
-                              InkWell(
-                                onTap: () {
-                                  int v = pageController.initialPage;
-                                  print("page int: $v");
-                                  pageController.nextPage(
-                                    duration: Duration(seconds: 1),
-                                    curve: Curves.bounceIn,
-                                  );
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 40,
-                                  child: Text(
-                                    "Continuer",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                      colors: <Color>[
-                                        Colors.yellow.shade700,
-                                        Colors.black
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text.rich(
+                                    TextSpan(
+                                      text: "Africulture ",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text:
+                                              "Offres des services differents selon que vous etes une entreprise ou un individu. Faite un choix et cliquez sur continuer.",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 13,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
-                                ),
-                              )
-                            ],
-                          ),
+                                  InkWell(
+                                    onTap: () {
+                                      int v = pageController.initialPage;
+                                      print("page int: $v");
+                                      pageController.nextPage(
+                                        duration: Duration(seconds: 1),
+                                        curve: Curves.bounceIn,
+                                      );
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      height: 40,
+                                      child: Text(
+                                        "Continuer",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                          colors: <Color>[
+                                            Colors.yellow.shade700,
+                                            Colors.black
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            MensionLegale(typeVendeur, pageController),
+                            FormulaireAdhesion(typeVendeur, pageController),
+                          ],
                         ),
-                        MensionLegale(typeVendeur, pageController),
-                        FormulaireAdhesion(typeVendeur, pageController),
-                        Container(
-                          color: Colors.yellowAccent,
-                        )
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
       ),
     );
   }

@@ -84,11 +84,11 @@ class _Partie3 extends State<Partie3> {
                     //final box = GetStorage();
                     //Map<String, dynamic> imap = box.read('produit');
                     //print("La valeur: $imap");
-
+                    var vendeurInfos = box.read("profil_vendeur");
                     //
 
                     Map<String, dynamic> m = {
-                      "idfournisseur": "0",
+                      "idfournisseur": "${vendeurInfos['id']}",
                       "titreMar": creationController.titreMar.value,
                       "deviseMar": "\$",
                       "prixMar": creationController.prixMar.value,
@@ -107,12 +107,15 @@ class _Partie3 extends State<Partie3> {
                       "promotion": false,
                       "prixRabes": 0.0,
                       "nombreImages": listeImage.length,
-                      "nomBoutique": "", //,
+                      "nomBoutique": "${vendeurInfos['nom']}", //,
+                      "topbar": false, //,
                       "longueur": creationController.longueur.value,
                       "largeur": creationController.largeur.value,
                       "profondeur": creationController.profondeur.value,
-                      "paysOrigine": "RDC",
-                      "codePays": "+243",
+                      "paysOrigine":
+                          "RDC", //Information associé à chaque produit qu'il crée
+                      "codePays":
+                          "+243", //Information associé à chaque produit qu'il crée
                     };
                     //
                     int r = await creationController.enregistrerProduit(m);

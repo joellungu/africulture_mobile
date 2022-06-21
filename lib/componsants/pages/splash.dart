@@ -13,7 +13,7 @@ class Splash extends StatelessWidget {
   //
   checkLogin() async {
     Timer(const Duration(seconds: 3), () {
-      //
+      //Je ne me rappel plus pourquoi...
       if (box.read("unique") == null) {
         box.write("unique", "");
       }
