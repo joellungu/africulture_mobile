@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:africulture_mobile/componsants/contr%C3%B4ler/accueil_controller.dart';
+import 'package:africulture_mobile/componsants/pages/principale.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,6 +19,7 @@ class Partie3 extends StatefulWidget {
 class _Partie3 extends State<Partie3> {
   //
   CreationController creationController = Get.find();
+  AccueilController accueilController = Get.find();
   //
 
   @override
@@ -94,6 +97,7 @@ class _Partie3 extends State<Partie3> {
                       "prixMar": creationController.prixMar.value,
                       "poidsUnitaire": creationController.poidsUnitaire.value,
                       "stockMar": creationController.stockMar.value,
+                      "uniteP": creationController.uniteP.value,
                       "likeMar": 0,
                       "descriptionMar": creationController.descriptionMar.value,
                       "infosSupplementaireMar":
@@ -103,7 +107,7 @@ class _Partie3 extends State<Partie3> {
                       //"tailleUtilite": creationController.tailleUtilite.value,
                       "datePosterMar": "${DateTime.now()}",
                       "filtreMar": "",
-                      "statutMar": true,
+                      "statutMar": false,
                       "promotion": false,
                       "prixRabes": 0.0,
                       "nombreImages": listeImage.length,
@@ -148,8 +152,10 @@ class _Partie3 extends State<Partie3> {
                       if (v) {
                         print("La valeur dans le condition vaut: $v");
                         Get.back();
+                        Get.offAll(Principale());
+                        accueilController.setEcranIndex(4);
                         Get.showSnackbar(
-                          GetSnackBar(
+                          const GetSnackBar(
                             title: "SUCCESS",
                             message: "Enregistrement effectué",
                             duration: Duration(

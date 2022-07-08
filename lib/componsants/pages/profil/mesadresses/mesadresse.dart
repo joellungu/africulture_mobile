@@ -24,8 +24,8 @@ class _Mesadresses extends State<Mesadresses> with TickerProviderStateMixin {
   final avenue = TextEditingController();
   final numero = TextEditingController();
   final codePostal = TextEditingController();
-  var pays;
-  var codePays;
+  var pays = "CD";
+  var codePays = "+243";
   //
   final box = GetStorage();
   //
@@ -96,219 +96,227 @@ class _Mesadresses extends State<Mesadresses> with TickerProviderStateMixin {
       body: TabBarView(
         controller: controller,
         children: [
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: ListView(
-              children: [
-                TextFormField(
-                  controller: titre,
-                  decoration: const InputDecoration(
-                    hintText: 'Titre',
-                    labelText: 'Titre',
+          Form(
+            key: formKey,
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: ListView(
+                children: [
+                  TextFormField(
+                    controller: titre,
+                    decoration: const InputDecoration(
+                      hintText: 'Titre',
+                      labelText: 'Titre',
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Entrez le Titre';
+                      }
+
+                      return null;
+                    },
+                    onChanged: (value) {
+                      //print("Password value $value");
+                    },
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Entrez le Titre';
-                    }
-
-                    return null;
-                  },
-                  onChanged: (value) {
-                    //print("Password value $value");
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  //height: 40,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Pays  "),
-                      CountryCodePicker(
-                        onChanged: (p) {
-                          pays = p.name;
-                          codePays = p.code;
-                        },
-                        // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                        initialSelection: 'CD',
-                        favorite: ['+243', 'FR'],
-                        // optional. Shows only country name and flag
-                        showCountryOnly: false,
-                        // optional. Shows only country name and flag when popup is closed.
-                        showOnlyCountryWhenClosed: false,
-                        // optional. aligns the flag and the Text left
-                        alignLeft: false,
-                      ),
-                    ],
+                  const SizedBox(
+                    height: 20,
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  controller: etatProvince,
-                  decoration: const InputDecoration(
-                    hintText: 'Etat / Province',
-                    labelText: 'Etat / Province',
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    //height: 40,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Pays  "),
+                        CountryCodePicker(
+                          onChanged: (p) {
+                            pays = p.code!;
+                            codePays = p.dialCode!;
+                            print("pays: $pays, codePays: $codePays");
+                          },
+                          // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+                          initialSelection: 'CD',
+                          favorite: ['+243', '+33'],
+                          // optional. Shows only country name and flag
+                          showCountryOnly: false,
+                          // optional. Shows only country name and flag when popup is closed.
+                          showOnlyCountryWhenClosed: false,
+                          // optional. aligns the flag and the Text left
+                          alignLeft: false,
+                        ),
+                      ],
+                    ),
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Entrez votre province ou adresse';
-                    }
-
-                    return null;
-                  },
-                  onChanged: (value) {
-                    //print("Password value $value");
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  controller: ville,
-                  decoration: const InputDecoration(
-                      hintText: 'Ville', labelText: 'Ville'),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Entrez votre ville';
-                    }
-
-                    return null;
-                  },
-                  onChanged: (value) {
-                    //print("Password value $value");
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  controller: commArrond,
-                  decoration: const InputDecoration(
-                    hintText: 'Commune / Arrondissement',
-                    labelText: 'Commune / Arrondissement',
+                  const SizedBox(
+                    height: 20,
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Entrez votre commArrond';
-                    }
+                  TextFormField(
+                    controller: etatProvince,
+                    decoration: const InputDecoration(
+                      hintText: 'Etat / Province',
+                      labelText: 'Etat / Province',
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Entrez votre province ou adresse';
+                      }
 
-                    return null;
-                  },
-                  onChanged: (value) {
-                    //print("Password value $value");
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  controller: quartier,
-                  decoration: const InputDecoration(
-                      hintText: 'Quartier', labelText: 'Quartier'),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Entrez votre quartier';
-                    }
-
-                    return null;
-                  },
-                  onChanged: (value) {
-                    //print("Password value $value");
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  controller: avenue,
-                  decoration: const InputDecoration(
-                    hintText: 'Avenue ou Rue',
-                    labelText: 'Avenue ou Rue',
+                      return null;
+                    },
+                    onChanged: (value) {
+                      //print("Password value $value");
+                    },
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Entrez votre avenue';
-                    }
-
-                    return null;
-                  },
-                  onChanged: (value) {
-                    //print("Password value $value");
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  controller: numero,
-                  decoration: const InputDecoration(
-                    hintText: 'Numéro',
-                    labelText: 'Numéro',
+                  const SizedBox(
+                    height: 20,
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Entrez votre numéro';
-                    }
+                  TextFormField(
+                    controller: ville,
+                    decoration: const InputDecoration(
+                        hintText: 'Ville', labelText: 'Ville'),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Entrez votre ville';
+                      }
 
-                    return null;
-                  },
-                  onChanged: (value) {
-                    //print("Password value $value");
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  controller: codePostal,
-                  decoration: const InputDecoration(
-                    hintText: 'Code postal',
-                    labelText: 'Code postal',
+                      return null;
+                    },
+                    onChanged: (value) {
+                      //print("Password value $value");
+                    },
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Entrez votre Code postal';
-                    }
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    controller: commArrond,
+                    decoration: const InputDecoration(
+                      hintText: 'Commune / Arrondissement',
+                      labelText: 'Commune / Arrondissement',
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Entrez votre commArrond';
+                      }
 
-                    return null;
-                  },
-                  onChanged: (value) {
-                    //print("Password value $value");
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    listeAdresse.add({
-                      "titre": titre.text,
-                      "pays": pays,
-                      "codePays": codePays,
-                      "etatProvince": etatProvince.text,
-                      "ville": ville.text,
-                      "commArrond": commArrond.text,
-                      "quartier": quartier.text,
-                      "avenue": avenue.text,
-                      "numero": numero.text,
-                      "codePostal": codePostal.text,
-                    });
-                    //
-                    box.write("listeAdresse", listeAdresse);
-                    Get.snackbar(
-                      "Enregistrer",
-                      "Enregistrement éffectué",
-                      duration: const Duration(seconds: 5),
-                    );
-                  },
-                  child: const Text("Ajouter"),
-                )
-              ],
+                      return null;
+                    },
+                    onChanged: (value) {
+                      //print("Password value $value");
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    controller: quartier,
+                    decoration: const InputDecoration(
+                        hintText: 'Quartier', labelText: 'Quartier'),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Entrez votre quartier';
+                      }
+
+                      return null;
+                    },
+                    onChanged: (value) {
+                      //print("Password value $value");
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    controller: avenue,
+                    decoration: const InputDecoration(
+                      hintText: 'Avenue ou Rue',
+                      labelText: 'Avenue ou Rue',
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Entrez votre avenue';
+                      }
+
+                      return null;
+                    },
+                    onChanged: (value) {
+                      //print("Password value $value");
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    controller: numero,
+                    decoration: const InputDecoration(
+                      hintText: 'Numéro',
+                      labelText: 'Numéro',
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Entrez votre numéro';
+                      }
+
+                      return null;
+                    },
+                    onChanged: (value) {
+                      //print("Password value $value");
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    controller: codePostal,
+                    decoration: const InputDecoration(
+                      hintText: 'Code postal',
+                      labelText: 'Code postal',
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Entrez votre Code postal';
+                      }
+
+                      return null;
+                    },
+                    onChanged: (value) {
+                      //print("Password value $value");
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        setState(() {
+                          listeAdresse.add({
+                            "titre": titre.text,
+                            "pays": pays,
+                            "codePays": codePays,
+                            "etatProvince": etatProvince.text,
+                            "ville": ville.text,
+                            "commArrond": commArrond.text,
+                            "quartier": quartier.text,
+                            "avenue": avenue.text,
+                            "numero": numero.text,
+                            "codePostal": codePostal.text,
+                          });
+                          //
+                          box.write("listeAdresse", listeAdresse);
+                          Get.snackbar(
+                            "Enregistrer",
+                            "Enregistrement éffectué",
+                            duration: const Duration(seconds: 4),
+                          );
+                        });
+                      }
+                    },
+                    child: const Text("Ajouter"),
+                  )
+                ],
+              ),
             ),
           ),
           listeAdresse.isNotEmpty
@@ -318,6 +326,20 @@ class _Mesadresses extends State<Mesadresses> with TickerProviderStateMixin {
                     return ListTile(
                       title: Text(listeAdresse[index]["titre"]),
                       subtitle: Text(listeAdresse[index]["pays"]),
+                      trailing: IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () {
+                          setState(() {
+                            listeAdresse.removeAt(index);
+                            box.write("listeAdresse", listeAdresse);
+                            Get.snackbar(
+                              "Suppression",
+                              "Suppression éffectué",
+                              duration: const Duration(seconds: 4),
+                            );
+                          });
+                        },
+                      ),
                     );
                   }),
                 )

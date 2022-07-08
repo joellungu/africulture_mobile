@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:africulture_mobile/componsants/pages/principale.dart';
+import 'package:africulture_mobile/componsants/pages/profil/profile_controller.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -226,6 +227,7 @@ class Certifier extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   //
   LoginController loginController = Get.find();
+  ProfileControllers profileControllers = Get.find();
   //
   final box = GetStorage();
 
@@ -297,13 +299,14 @@ class Certifier extends StatelessWidget {
                       onPressed: () {
                         final box = GetStorage();
                         //
-                        Map<String, dynamic> pr = box.read("userauth");
+                        //Map<String, dynamic> pr = box.read("userauth");
 
                         if (_formKey.currentState!.validate()) {
                           if (loginController.password.value == code.text) {
                             Map<String, dynamic> p = box.read("userauth");
                             box.write("utilisateur", p);
-                            Get.off(Principale());
+                            profileControllers.checkAffiche(); //
+                            Get.offAll(Principale());
                           }
                           //loginController
                           //
@@ -317,3 +320,4 @@ class Certifier extends StatelessWidget {
     );
   }
 }
+//

@@ -26,7 +26,7 @@ class FormulaireAdhesion extends StatelessWidget {
   //int taille = TextEditingController();
   final rccm = TextEditingController();
   //Boolean suspendre = TextEditingController();
-  List types = ["SARL", "SARLU", ""];
+  List types = ["ETS", "SARL", "SARLU", "SA", "SAU", "ASBL"];
   var type = "SARL";
 
   bool logBool = true;
@@ -37,7 +37,7 @@ class FormulaireAdhesion extends StatelessWidget {
 
     pageController.nextPage(
       duration: const Duration(seconds: 1),
-      curve: Curves.bounceIn,
+      curve: Curves.ease,
     );
   }
 

@@ -30,7 +30,7 @@ class _Expedition extends State<Expedition> {
     //
     tcc = tc.value;
     //
-    tc.value = tc.value + tva;
+    //tc.value = tc.value + tva;
   }
   //
   BestTutorSite _site = BestTutorSite.STANDARD;
@@ -40,7 +40,7 @@ class _Expedition extends State<Expedition> {
   AdresseController adresseController = Get.find();
   ExpeditionController expeditionController = Get.find();
   //
-  double tva = 10;
+  double tva = 5;
   RxDouble tc = 0.0.obs;
   double tcc = 0.0;
   //
@@ -67,7 +67,7 @@ class _Expedition extends State<Expedition> {
                     ),
                     children: [
                       TextSpan(
-                        text: "\$ $tcc\n",
+                        text: "\$ ${tc.value + tva}\n",
                         style: TextStyle(
                           color: Colors.grey.shade700,
                           fontWeight: FontWeight.normal,
@@ -75,58 +75,35 @@ class _Expedition extends State<Expedition> {
                         ),
                       ),
                       WidgetSpan(
-                          child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Icon(
-                            Icons.star_border_outlined,
-                            size: 15,
-                            color: Colors.yellow.shade700,
-                          ),
-                          Icon(
-                            Icons.star_border_outlined,
-                            size: 15,
-                            color: Colors.yellow.shade700,
-                          ),
-                          Icon(
-                            Icons.star_border_outlined,
-                            size: 15,
-                            color: Colors.yellow.shade700,
-                          ),
-                          Icon(
-                            Icons.star_border_outlined,
-                            size: 15,
-                            color: Colors.yellow.shade700,
-                          ),
-                          Icon(
-                            Icons.star_border_outlined,
-                            size: 15,
-                            color: Colors.yellow.shade700,
-                          )
-                        ],
-                      )),
-                      TextSpan(
-                        text: '',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 15,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'TOTAL GENERAL \n',
-                        style: TextStyle(
-                          color: Colors.green.shade700,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 15,
-                        ),
-                      ),
-                      TextSpan(
-                        text: "\$ ${tc.value} \n",
-                        style: TextStyle(
-                          color: Colors.grey.shade700,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 20,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.star_border_outlined,
+                              size: 15,
+                              color: Colors.yellow.shade700,
+                            ),
+                            Icon(
+                              Icons.star_border_outlined,
+                              size: 15,
+                              color: Colors.yellow.shade700,
+                            ),
+                            Icon(
+                              Icons.star_border_outlined,
+                              size: 15,
+                              color: Colors.yellow.shade700,
+                            ),
+                            Icon(
+                              Icons.star_border_outlined,
+                              size: 15,
+                              color: Colors.yellow.shade700,
+                            ),
+                            Icon(
+                              Icons.star_border_outlined,
+                              size: 15,
+                              color: Colors.yellow.shade700,
+                            )
+                          ],
                         ),
                       ),
                       TextSpan(
@@ -155,6 +132,30 @@ class _Expedition extends State<Expedition> {
                       ),
                       TextSpan(
                         text: "\$ $tva\n",
+                        style: TextStyle(
+                          color: Colors.grey.shade700,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 20,
+                        ),
+                      ),
+                      const TextSpan(
+                        text: '',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15,
+                        ),
+                      ),
+                      TextSpan(
+                        text: 'TOTAL GENERAL \n',
+                        style: TextStyle(
+                          color: Colors.green.shade700,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15,
+                        ),
+                      ),
+                      TextSpan(
+                        text: "\$ ${tcc} \n",
                         style: TextStyle(
                           color: Colors.grey.shade700,
                           fontWeight: FontWeight.normal,
@@ -190,7 +191,7 @@ class _Expedition extends State<Expedition> {
                         onChanged: (BestTutorSite? value) {
                           setState(() {
                             _site = value!;
-                            tc.value = tc.value / 1.7;
+                            tva = 5;
                             expeditionController.express.value = false;
                           });
                         },
@@ -209,7 +210,7 @@ class _Expedition extends State<Expedition> {
                         onChanged: (BestTutorSite? value) {
                           setState(() {
                             _site = value!;
-                            tc.value = tc.value * 1.7;
+                            tva = 15;
                             expeditionController.express.value = true;
                           });
                         },

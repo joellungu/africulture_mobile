@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:http/http.dart' as http;
 import '../../../utile/utils.dart';
 import '../../contrôler/splash_controller.dart';
 import '../profil/profile_controller.dart';
@@ -11,6 +10,8 @@ import 'login.dart';
 class LoginController extends GetxController {
   SplashController splashController = Get.find();
   ProfileControllers profileController = Get.put(ProfileControllers());
+  //
+  LoginConnexion loginConnexion = LoginConnexion();
   //
   final box = GetStorage();
   //
@@ -36,32 +37,31 @@ class LoginController extends GetxController {
     password.value = c;
     print(c);
     //
-    http.Response response;
+    Response response;
     if (dejaLog) {
       //
 
-      response =
-          await http.get(Utils.lienUrl("utilisateur/auth/$codeP/$numero/$c"));
+      response = await loginConnexion.log1(codeP, numero, dejaLog, c);
     } else {
       //
-      response = await http
-          .get(Utils.lienUrl("utilisateur/loging/$codeP/$numero/$nom/$c"));
+      response = await loginConnexion.log2(codeP, numero, nom, c, dejaLog);
     }
 
     print(response.statusCode);
     print(response.body);
 
     //
-    if (response.statusCode == 201 || response.statusCode == 200) {
+    if (response.isOk) {
       //
-      String rep = response.body;
-      Map<String, dynamic> mapRep = jsonDecode(rep);
-      //password.value = response.body;
-      //save_n_utilisateur(mapRep);
-      print(response.body);
-      box.write("userauth", jsonDecode(response.body)); //
+      box.write("userauth", response.body); //
       //print(response.body);
+
       Get.off(Certifier());
+      Get.snackbar(
+        "Votre code",
+        "$c",
+        duration: Duration(seconds: 7),
+      );
     } else if (response.statusCode == 400) {
       message(
         "Erreur",
@@ -87,19 +87,12 @@ class LoginController extends GetxController {
   }
 
   enregistrement(Map<String, dynamic> nUtilisateur) async {
-    http.Response response = await http.post(
-      Utils.lienUrl("utilisateur/save"),
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      },
-      body: jsonEncode(nUtilisateur),
-    );
+    Response response = await loginConnexion.enregistrement(nUtilisateur);
     //
-    if (response.statusCode == 201 || response.statusCode == 200) {
+    if (response.isOk) {
       //
-      String rep = response.body;
-      Map<String, dynamic> mapRep = jsonDecode(rep);
+      //String rep = response.body;
+      Map<String, dynamic> mapRep = response.body;
       //Enregistrement reussit
       save_n_utilisateur(mapRep);
       print(response.body);
@@ -148,5 +141,24 @@ class LoginController extends GetxController {
     //splashController.seLoger(true);
     //
     profileController.checkAffiche();
+  }
+}
+
+class LoginConnexion extends GetConnect {
+  //
+  Future<Response> log1(
+      String codeP, String numero, bool dejaLog, String c) async {
+    return get("${Utils.url}/utilisateur/auth/$codeP/$numero/$c");
+  }
+
+  //
+  Future<Response> log2(
+      String codeP, String numero, String nom, String c, bool dejaLog) async {
+    return get("${Utils.url}/utilisateur/loging/$codeP/$numero/$nom/$c");
+  }
+
+  //
+  Future<Response> enregistrement(Map<String, dynamic> nUtilisateur) {
+    return post("${Utils.url}/utilisateur/save", jsonEncode(nUtilisateur));
   }
 }

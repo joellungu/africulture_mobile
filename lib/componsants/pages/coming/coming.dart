@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:africulture_mobile/utile/utils.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
-
 import '../../widgets/carte_produit.dart';
 import 'coming_Controller.dart';
 
@@ -55,13 +55,15 @@ class Coming extends GetView<ComingController> {
                           child: Swiper(
                             duration: 2,
                             autoplay: true,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Image.asset(
-                                "assets/omg (${index + 1}).jpg",
-                                fit: BoxFit.fill,
+                            itemBuilder: (BuildContext context, int i) {
+                              return Container(
+                                child: Image.network(
+                                  "${Utils.url}/produit/image/${state['produitP'][i]['id']}/img0",
+                                  fit: BoxFit.cover,
+                                ),
                               );
                             },
-                            itemCount: 4,
+                            itemCount: state['produitP'].length,
                             loop: true,
                             layout: SwiperLayout.DEFAULT,
                             pagination: SwiperPagination(),

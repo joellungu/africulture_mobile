@@ -21,6 +21,7 @@ class CreationController extends GetxController {
   RxString paysOrigine = RxString("");
   RxString codePays = RxString("");
   RxString stockMar = RxString("");
+  RxString uniteP = RxString("");
   RxString descriptionMar = RxString("");
   RxString infosSupplementaireMar = RxString("");
   RxString categorieMar = RxString("Art");

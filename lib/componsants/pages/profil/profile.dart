@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer/shimmer.dart';
-
 import '../../contrôler/splash_controller.dart';
 import '../../widgets/choix_langue.dart';
 import '../../widgets/noter.dart';
@@ -63,7 +61,7 @@ class Profil extends StatelessWidget {
                   : Text("${profileController.infosPerso['nom']}"),
               subtitle: profileController.infosPerso['nom'] == null
                   ? Container()
-                  : Text("${profileController.infosPerso['numero']} "),
+                  : Text("${profileController.infosPerso['numero']}"),
               trailing: Icon(
                 Icons.arrow_forward_ios,
                 color: Colors.grey.shade700,

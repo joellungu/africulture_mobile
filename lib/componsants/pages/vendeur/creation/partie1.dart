@@ -3,13 +3,27 @@ import 'package:get/get.dart';
 
 import 'creation_controller.dart';
 
-class Partie1 extends StatelessWidget {
+class Partie1 extends StatefulWidget {
+  //
+  List titres = [];
+  //
+  PageController? pageController;
+  //
+  Partie1(this.pageController, this.titres);
+  @override
+  State<StatefulWidget> createState() {
+    return _Partie1();
+  }
+}
+
+class _Partie1 extends State<Partie1> {
   //
   var formKey = GlobalKey<FormState>();
   TextEditingController titreMar = TextEditingController();
   TextEditingController deviseMar = TextEditingController();
   TextEditingController prixMar = TextEditingController();
   TextEditingController poidsUnitaire = TextEditingController();
+  String uniteP = "Kg";
   TextEditingController stockMar = TextEditingController();
   TextEditingController likeMar = TextEditingController();
   TextEditingController descriptionMar = TextEditingController();
@@ -20,10 +34,12 @@ class Partie1 extends StatelessWidget {
   TextEditingController largeur = TextEditingController();
   TextEditingController profondeur = TextEditingController();
   //
-  List titres = [];
   //
-  PageController? pageController;
-  Partie1(this.pageController, this.titres);
+  List categories = [
+    "T",
+    "Kg",
+    "g",
+  ];
   //
   CreationController creationController = Get.find();
   //
@@ -95,17 +111,45 @@ class Partie1 extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                      hintText: 'Poid unitaire en g',
-                      labelText: 'Poid unitaire en g'),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Ce champ est obligatoire';
-                    }
-                    return null;
-                  },
-                  controller: poidsUnitaire,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      flex: 8,
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                            hintText: 'Poid unitaire avec emballage',
+                            labelText: 'Poid unitaire avec emballage'),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Ce champ est obligatoire';
+                          }
+                          return null;
+                        },
+                        controller: poidsUnitaire,
+                      ),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          value: uniteP,
+                          items: List.generate(categories.length, (index) {
+                            return DropdownMenuItem(
+                              value: "${categories[index]}",
+                              child: Text("${categories[index]}"),
+                            );
+                          }),
+                          onChanged: (e) {
+                            setState(() {
+                              uniteP = e!;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: 20,
@@ -227,8 +271,8 @@ class Partie1 extends StatelessWidget {
                       //print("Après: $i");
                       creationController.avancement.value =
                           creationController.avancement.value + conte;
-                      creationController.titre.value = titres[1];
-                      pageController!.nextPage(
+                      creationController.titre.value = widget.titres[1];
+                      widget.pageController!.nextPage(
                         duration: const Duration(microseconds: 500),
                         curve: Curves.ease,
                       );

@@ -17,7 +17,7 @@ class FormulaireAdhesionController extends GetxController {
   enregistreVendeur(Map<String, dynamic> p) async {
     //idproduit;image
     Response rep = await vendeurConnexion.enregistreVendeur(p);
-    if (rep.statusCode == 201 || rep.statusCode == 200) {
+    if (rep.isOk) {
       //
       print("${rep.body}");
       //box.write("produit", rep.body);
@@ -26,7 +26,7 @@ class FormulaireAdhesionController extends GetxController {
       //
       box.write("profil_vendeur", rep.body);
       //
-      vendeurController.aUnCompte.value = true;
+      //vendeurController.aUnCompte.value = true;
     } else {
       //
       print("${rep.statusCode}");

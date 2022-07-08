@@ -4,29 +4,38 @@ import 'package:get/get.dart';
 
 import '../pages/panier/panier_controller.dart';
 
-class CartePanier extends StatelessWidget {
+class CartePanier extends StatefulWidget {
   RxInt v = 1.obs;
   int index;
   bool l = true;
   RxDouble prix = RxDouble(0); //
   RxDouble resultat = RxDouble(0);
+  int quant;
 
-  PanierController panierController = Get.find();
+  CartePanier(this.index, this.l, this.quant);
 
-  CartePanier(this.index, this.l, int quant) {
-    prix = RxDouble(panierController.listeProduit[index]['prix']);
-    resultat = RxDouble(panierController.listeProduit[index]['prix']);
-    v.value = quant;
+  @override
+  State<StatefulWidget> createState() {
+    return _CartePanier();
   }
+}
 
-  /*
-  "id": "${p['id']}",
-  "image":
-      "produit/image/${p['id']}/img0",
-  "devise": "${p['deviseMar']}",
-  "prix": "${p['prixMar']}",
-  "ch": quantite,
-  */
+class _CartePanier extends State<CartePanier> {
+  PanierController panierController = Get.find();
+  //
+  TextEditingController quantite = TextEditingController(text: "1");
+  @override
+  void initState() {
+    widget.prix = RxDouble(panierController.listeProduit[widget.index]['prix']);
+    widget.resultat =
+        RxDouble(panierController.listeProduit[widget.index]['prix']);
+    widget.v.value = widget.quant;
+    widget.resultat.value = widget.prix.value * widget.v.value;
+    //
+    quantite = TextEditingController(text: "${widget.quant}");
+    //
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +65,7 @@ class CartePanier extends StatelessWidget {
               flex: 3,
               child: Container(
                 child: Image.network(
-                    "${Utils.url}/${panierController.listeProduit[index]['image']}"),
+                    "${Utils.url}/${panierController.listeProduit[widget.index]['image']}"),
               ),
             ),
             Expanded(
@@ -72,7 +81,7 @@ class CartePanier extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "${panierController.listeProduit[index]['titre']}",
+                        "${panierController.listeProduit[widget.index]['titre']}",
                         softWrap: true,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -80,25 +89,67 @@ class CartePanier extends StatelessWidget {
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Obx(
-                        () => Text(
-                            "${panierController.listeProduit[index]['devise']} ${resultat.value}"),
-                      ),
+                      child: Obx(() {
+                        print("valeur: ${widget.resultat.value}");
+                        return Text(
+                            "${panierController.listeProduit[widget.index]['devise']} ${widget.resultat.value}");
+                      }),
                     ),
                     SizedBox(
                       height: 5,
                     ),
-                    l
+                    widget.l
                         ? Align(
                             alignment: Alignment.centerLeft,
                             child: Container(
-                              height: 30,
-                              width: 50,
+                              height: 40,
+                              width: 100,
                               alignment: Alignment.centerLeft,
-                              child: DropdownButtonHideUnderline(
+                              child: TextField(
+                                controller: quantite,
+                                textAlignVertical: TextAlignVertical.center,
+                                onChanged: (t) {
+                                  try {
+                                    //
+                                    print(
+                                        "le 1 resultat de p: ${widget.prix.value} * quantite: ${widget.v.value} = ${widget.resultat.value}");
+                                    //
+                                    panierController.listeProduit[widget.index]
+                                        ['quantite'] = int.parse(t);
+                                    //
+                                    panierController.listeProduit[widget.index]
+                                            ['prix'] =
+                                        widget.prix.value * int.parse(t);
+                                    //
+                                    widget.resultat.value =
+                                        widget.prix.value * int.parse(t);
+                                    //
+                                  } catch (e) {
+                                    //
+                                    panierController.listeProduit[widget.index]
+                                        ['quantite'] = 1;
+                                    //
+                                    panierController.listeProduit[widget.index]
+                                        ['prix'] = widget.prix.value * 1;
+                                    print("erreur: $e");
+                                  }
+                                },
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 17,
+                                ),
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                ),
+                              ),
+                              /*
+                              DropdownButtonHideUnderline(
                                   child: Obx(
                                 () => DropdownButton(
-                                  value: v.value,
+                                  value: widget.v.value,
                                   items: List.generate(
                                     11,
                                     (index) => DropdownMenuItem(
@@ -107,18 +158,24 @@ class CartePanier extends StatelessWidget {
                                     ),
                                   ),
                                   onChanged: (Object? value) {
-                                    v.value = value as int;
-                                    resultat.value = prix.value * v.value;
-                                    panierController.listeProduit[index]
-                                        ['quantite'] = v.value;
-                                    panierController.listeProduit[index]
-                                        ['prix'] = resultat.value;
+                                    widget.v.value = value as int;
+                                    widget.resultat.value =
+                                        widget.prix.value * widget.v.value;
+                                    print(
+                                        "le 1 resultat de p: ${widget.prix.value} * quantite: ${widget.v.value} = ${widget.resultat.value}");
+                                    panierController.listeProduit[widget.index]
+                                        ['quantite'] = widget.v.value;
+                                    panierController.listeProduit[widget.index]
+                                        ['prix'] = widget.resultat.value;
+                                    print(
+                                        "prix: ${panierController.listeProduit[widget.index]['prix']}, quantite: ${panierController.listeProduit[widget.index]['quantite']}");
                                   },
                                 ),
-                              )),
+                              ),),
+                              
                               decoration: BoxDecoration(
                                   border:
-                                      Border.all(color: Colors.grey.shade300)),
+                                      Border.all(color: Colors.grey.shade300),),*/
                             ),
                           )
                         : Container(),

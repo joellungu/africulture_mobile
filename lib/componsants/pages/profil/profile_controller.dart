@@ -10,11 +10,11 @@ class ProfileControllers extends GetxController {
   checkAffiche() {
     final box = GetStorage();
     //box.write("utilisateur", {});
-    var o = box.read("utilisateur");
+    //var o = box.read("utilisateur");
     //print(o);
     //
     if (box.read("utilisateur") != null) {
-      infosPerso.value = o;
+      infosPerso.value = box.read("utilisateur");
       //infosPerso = o;
     }
   }

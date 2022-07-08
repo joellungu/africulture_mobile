@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../profil/propos.dart';
 import '../creation/creation_produit.dart';
 import '../vendeur_controller.dart';
+import 'commande_vendeur/commande_vendeur.dart';
 
 class ProfilVendeur extends StatelessWidget {
   //vendeurControllers vendeurController = Get.find();
@@ -145,6 +146,7 @@ class ProfilVendeur extends StatelessWidget {
                         ),
                       ),
                       ListTile(
+                        onTap: () => Get.to(CommandeVendeur()),
                         leading: Icon(Icons.shopping_basket_outlined),
                         title: Text("vos_commandes"),
                         trailing: Container(

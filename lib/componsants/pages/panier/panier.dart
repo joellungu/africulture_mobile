@@ -1,3 +1,4 @@
+import 'package:africulture_mobile/componsants/pages/login/login.dart';
 import 'package:africulture_mobile/componsants/pages/profil/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -38,25 +39,30 @@ class Pagner extends StatelessWidget {
               left: 10,
               right: 10,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text.rich(
-                  TextSpan(
-                      text: "TOTAL", children: [TextSpan(text: "18 Articles")]),
-                ),
-                TextButton(
-                  onPressed: () {
-                    panierController.listeProduit.clear();
-                  },
-                  child: Text(
-                    "VIDER LE PANIER",
-                    style: TextStyle(
-                      color: Colors.red.shade700,
-                    ),
+            child: Obx(
+              () => Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text.rich(
+                    TextSpan(text: "TOTAL   ", children: [
+                      TextSpan(
+                          text:
+                              "${panierController.listeProduit.value.length} Articles")
+                    ]),
                   ),
-                )
-              ],
+                  TextButton(
+                    onPressed: () {
+                      panierController.listeProduit.clear();
+                    },
+                    child: Text(
+                      "VIDER LE PANIER",
+                      style: TextStyle(
+                        color: Colors.red.shade700,
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           Expanded(
@@ -80,7 +86,52 @@ class Pagner extends StatelessWidget {
                       left: 20,
                       right: 20,
                     ),
-                    child: ElevatedButton(
+                    child: InkWell(
+                      onTap: () {
+                        if (panierController.listeProduit.value.isEmpty) {
+                          Get.snackbar("Panier", "Le Panier est vide !");
+                        } else {
+                          //
+                          Map<dynamic, dynamic> m =
+                              profileControllers.infosPerso;
+
+                          if (m['numero'] != null) {
+                            Get.to(Commander());
+                          } else {
+                            Get.to(Login());
+                            Get.snackbar(
+                              "Compte",
+                              "Vous n'avez pas un compte",
+                              duration: Duration(seconds: 5),
+                            );
+                          }
+                        }
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 40,
+                        child: Text(
+                          "Passer la commander",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 15,
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: <Color>[
+                              Colors.yellow.shade700,
+                              Colors.black
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    /*
+                    ElevatedButton(
                       onPressed: () {
                         if (panierController.listeProduit.value.isEmpty) {
                           Get.snackbar("Panier", "Le Panier est vide !");
@@ -102,6 +153,7 @@ class Pagner extends StatelessWidget {
                       },
                       child: Text("Passer la commander"),
                     ),
+                    */
                   )
                 ],
               ),

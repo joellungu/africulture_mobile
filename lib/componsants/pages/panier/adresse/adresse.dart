@@ -187,7 +187,11 @@ class _Adresse extends State<Adresse> {
                   children: [
                     Text("Pays de destination  "),
                     CountryCodePicker(
-                      onChanged: print,
+                      onChanged: (p) {
+                        pays = p.code!;
+                        codePays = p.dialCode!;
+                        print("pays: $pays, codePays: $codePays");
+                      },
                       // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
                       initialSelection: 'CD',
                       favorite: ['+243', 'FR'],

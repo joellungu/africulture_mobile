@@ -1,13 +1,10 @@
 import 'package:africulture_mobile/componsants/pages/panier/adresse/adresse_controller.dart';
 import 'package:africulture_mobile/componsants/pages/panier/paiement/validation_controller.dart';
 import 'package:africulture_mobile/componsants/pages/produits/produit_controller.dart';
-import 'package:africulture_mobile/componsants/pages/vendeur/profil_vendeur/profile_vendeur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-//import 'package:get_storage/get_storage.dart';
-//import 'package:hive/hive.dart';
 import 'componsants/contrôler/accueil_controller.dart';
 import 'componsants/contrôler/splash_controller.dart';
 import 'componsants/pages/categorie/categorie_controller.dart';
@@ -23,6 +20,7 @@ import 'componsants/pages/recherche/recherche_controller.dart';
 import 'componsants/pages/splash.dart';
 import 'componsants/pages/vendeur/creation/creation_controller.dart';
 import 'componsants/pages/vendeur/formulaire_adhesion/formulaire_adhesion_controller.dart';
+import 'componsants/pages/vendeur/profil_vendeur/commande_vendeur/commande_vendeur_controller.dart';
 import 'componsants/pages/vendeur/vendeur_controller.dart';
 import 'utile/langues/traduction.dart';
 
@@ -35,7 +33,7 @@ void main() async {
   Get.put(PanierController());
   Get.put(AccueilController());
   ProfileControllers profileController = Get.put(ProfileControllers());
-  //VendeurController vendeurController = Get.put(VendeurController());
+  Get.put(CommandeVendeurController());
   Get.put(VendeurController());
   Get.put(CommanderController());
   Get.put(RechercheController());

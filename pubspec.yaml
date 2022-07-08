@@ -36,7 +36,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   get:
   hive: ^2.1.0
-  http:
   connectivity_plus:
   pretty_qr_code:
   file_picker: ^4.6.1
@@ -45,6 +44,7 @@ dependencies:
   card_swiper: ^2.0.3
   get_storage:
   country_code_picker: ^2.0.2
+  flutter_calendar_carousel: ^2.3.1
 
 dev_dependencies:
   flutter_test:

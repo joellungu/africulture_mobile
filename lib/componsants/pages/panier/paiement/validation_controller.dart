@@ -18,18 +18,21 @@ class ValidationController extends GetxController
   //
   RxList listeImages = [].obs;
   //
+  RxBool valeurValidationPrecommande = false.obs;
+  RxMap validationPrecommande = {}.obs;
+  //
   ValidationConnexion validationConnexion = ValidationConnexion();
   //
   RxMap produitDetails = RxMap();
   //
   loadProduit(String code, Map<String, dynamic> c) async {
     Response r = await validationConnexion.commander(code, c); //
-    if (r.statusCode == 200 || r.statusCode == 201 || r.statusCode == 204) {
+    if (r.isOk) {
       //
       Get.back();
       panierController.listeProduit.value.clear();
-      Get.off(Principale());
-      accueilController.setEcranIndex(0); 
+      Get.offAll(Principale());
+      accueilController.setEcranIndex(0);
       Get.snackbar(
         "SUCCESS",
         "Commande éffectué",
@@ -45,6 +48,22 @@ class ValidationController extends GetxController
       );
     }
   }
+
+  //
+  precommande(List liste) async {
+    valeurValidationPrecommande = false.obs;
+    Response rep = await validationConnexion.precommande(liste);
+    print("Le contenu statut: ${rep.statusCode}");
+    print("Le contenu body: ${rep.body}");
+
+    if (rep.isOk) {
+      valeurValidationPrecommande.value = true;
+      validationPrecommande.value = rep.body;
+    } else {
+      valeurValidationPrecommande.value = true;
+      validationPrecommande.value = {};
+    }
+  }
 }
 
 class ValidationConnexion extends GetConnect {
@@ -57,5 +76,6 @@ class ValidationConnexion extends GetConnect {
   Future<Response> loadImagesProduit(String id) async =>
       get("${Utils.url}/produit/liste_images/$id");
   //
-
+  Future<Response> precommande(List liste) async =>
+      post("${Utils.url}/commande/precommande", liste);
 }

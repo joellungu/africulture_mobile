@@ -1,14 +1,13 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-
 import '../../../utile/utils.dart';
 
 class VendeurController extends GetxController {
   RxDouble avancement = 0.0.obs;
   RxString titreProfile = "Titre_profil_vendeur".obs;
-  RxBool aUnCompte = false.obs;
-  RxBool suspendu = true.obs;
+  //RxBool aUnCompte = false.obs;
+  //RxBool suspendu = true.obs;
   RxBool check = RxBool(true); //Par defaut je check
   RxMap infosEnt = RxMap();
   //
@@ -42,8 +41,7 @@ class VendeurController extends GetxController {
     print(vendeurInfos);
     print("____________________________: $vendeurInfos");
     if (vendeurInfos != null) {
-      aUnCompte.value = true; //1
-      suspendu.value = vendeurInfos["suspendre"];
+      infosEnt.value = vendeurInfos;
       print(vendeurInfos);
       checkStatut("${vendeurInfos["id"]}");
     }
@@ -63,7 +61,7 @@ class VendeurController extends GetxController {
       check.value = vendeurInfos['suspendre']; //false;
     } else {
       var vendeurInfos = box.read("profil_vendeur");
-      check.value = vendeurInfos[suspendu];
+      infosEnt.value = vendeurInfos;
     }
   }
 
@@ -71,10 +69,11 @@ class VendeurController extends GetxController {
   enregistreVendeur(Map<String, dynamic> p) async {
     //idproduit;image
     Response rep = await vendeurConnexion.enregistreVendeur(p);
-    if (rep.statusCode == 201 || rep.statusCode == 200) {
+    if (rep.isOk) {
       //
       print("${rep.body}");
-      //box.write("produit", rep.body);
+      box.write("profil_vendeur", rep.body);
+      infosEnt.value = rep.body;
       Get.back();
       Get.snackbar("Etape 2", "Veuillez maintenant associer les images");
     } else {

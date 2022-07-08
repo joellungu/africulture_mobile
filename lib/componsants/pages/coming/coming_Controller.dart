@@ -93,6 +93,7 @@ class ComingController extends GetxController
       loadPubListe.value = jsonDecode(r.bodyString!);
       loadPub.value = 1;
       coming['produitP'] = loadPubListe.value;
+      print(loadPubListe.value);
     } else {
       //
       loadN.value = 0;

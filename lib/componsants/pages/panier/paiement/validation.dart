@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:africulture_mobile/componsants/pages/panier/adresse/adresse_controller.dart';
 import 'package:africulture_mobile/componsants/pages/panier/expedition/expedition_controller.dart';
 import 'package:africulture_mobile/componsants/pages/panier/panier_controller.dart';
@@ -5,7 +7,7 @@ import 'package:africulture_mobile/componsants/pages/profil/profile_controller.d
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-
+import 'dart:math' as math;
 import 'validation_controller.dart';
 
 class Validation extends StatelessWidget {
@@ -17,6 +19,18 @@ class Validation extends StatelessWidget {
   //
   var formKey = GlobalKey<FormState>();
   final code = TextEditingController();
+  //
+  int t0 = math.Random().nextInt(10);
+  int t1 = math.Random().nextInt(10);
+  int t2 = math.Random().nextInt(10);
+  int t3 = math.Random().nextInt(10);
+  int t4 = math.Random().nextInt(10);
+  int t5 = math.Random().nextInt(10);
+  int t6 = math.Random().nextInt(10);
+  int t7 = math.Random().nextInt(10);
+  int t8 = math.Random().nextInt(10);
+  int t9 = math.Random().nextInt(10);
+  //
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +41,15 @@ class Validation extends StatelessWidget {
         ),
         backgroundColor: Colors.white,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Get.back();
+          },
+        ),
         centerTitle: true,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -95,13 +118,14 @@ class Validation extends StatelessWidget {
                     //
                     final box = GetStorage();
                     ProfileControllers profileController = Get.find();
-
+                    //adresseController.codePays.value
                     Map<String, dynamic> c = {
                       "numero": "${profileController.infosPerso['numero']}",
                       "nom": "${profileController.infosPerso['nom']}",
                       "date": "${DateTime.now()}",
                       "pays": "${adresseController.pays.value}",
-                      "code": "${adresseController.codePays.value}",
+                      "code":
+                          "${adresseController.pays.value}-${profileController.infosPerso['numero']}/$t1$t2$t2-$t3$t4$t5-$t6$t7$t8$t9",
                       "confirmation": false,
                       "expresse": expeditionController.express.value,
                       "expedier": false,
@@ -121,12 +145,11 @@ class Validation extends StatelessWidget {
                       },
                     };
 
-                    print(adresseController.codePostal);
+                    print(jsonEncode(c));
 
                     panierController.listeProduit.forEach((element) {
-                      print(element);
+                      //print(element);
                     });
-
                     //
                     validationController.loadProduit(code.text, c);
                     //Get.back();
@@ -135,7 +158,7 @@ class Validation extends StatelessWidget {
                 child: Container(
                   alignment: Alignment.center,
                   height: 40,
-                  child: Text(
+                  child: const Text(
                     "Paier",
                     style: TextStyle(
                       color: Colors.white,
@@ -157,5 +180,19 @@ class Validation extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String codes() {
+    int t0 = math.Random().nextInt(10);
+    int t1 = math.Random().nextInt(10);
+    int t2 = math.Random().nextInt(10);
+    int t3 = math.Random().nextInt(10);
+    int t4 = math.Random().nextInt(10);
+    int t5 = math.Random().nextInt(10);
+    int t6 = math.Random().nextInt(10);
+    int t7 = math.Random().nextInt(10);
+    int t8 = math.Random().nextInt(10);
+    int t9 = math.Random().nextInt(10);
+    return "$t1$t2$t2-$t3$t4$t5-$t6$t7$t8$t9";
   }
 }

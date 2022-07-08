@@ -20,7 +20,7 @@ class MensionLegale extends StatelessWidget {
     } else {
       pageController.nextPage(
         duration: const Duration(seconds: 1),
-        curve: Curves.bounceIn,
+        curve: Curves.ease,
       );
     }
   }
