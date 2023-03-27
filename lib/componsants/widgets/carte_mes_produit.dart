@@ -1,4 +1,4 @@
-import 'package:africulture_mobile/componsants/pages/vendeur/mesproduits/mesproduitdetails.dart';
+//import 'package:africulture_mobile/componsants/pages/vendeur/mesproduits/mesproduitdetails.dart';
 import 'package:africulture_mobile/utile/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,7 +33,7 @@ class _CarteMesProduite extends State<CarteMesProduite> {
       elevation: 0,
       child: InkWell(
         onTap: () {
-          Get.to(() => MesProduitDetails(widget.p));
+          //Get.to(() => MesProduitDetails(widget.p));
         },
         child: Container(
           //color: Colors.green.shade200,
@@ -47,7 +47,7 @@ class _CarteMesProduite extends State<CarteMesProduite> {
                 child: Container(
                   child: Image.network(
                     "${Utils.url}/produit/image/${widget.p['id']}/img0",
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                   ),
                 ),
               ),
@@ -61,7 +61,7 @@ class _CarteMesProduite extends State<CarteMesProduite> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "${widget.p['titreMar']}",
+                          "${widget.p['titre']}",
                           textAlign: TextAlign.left,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
@@ -71,7 +71,7 @@ class _CarteMesProduite extends State<CarteMesProduite> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            "${widget.p['deviseMar']} ${widget.p['prixMar']}",
+                            "${widget.p['devise']} ${widget.p['prix']}",
                             style: TextStyle(
                               color: Colors.grey.shade700,
                               fontWeight: FontWeight.bold,
@@ -84,7 +84,7 @@ class _CarteMesProduite extends State<CarteMesProduite> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            widget.p['stockMar'] != 0
+                            widget.p['stock'] != 0
                                 ? 'En Stock'
                                 : 'Plus en stock',
                             textAlign: TextAlign.left,

@@ -1,0 +1,18 @@
+{
+    "__typename": "ProductCategoryToProductConnectionEdge", 
+    "node": {
+        "__typename": "SimpleProduct", 
+        "databaseId": 332, 
+        "id": "cHJvZHVjdDozMzI=", 
+        "name": "Pondu (Feuilles de manioc)", 
+        "price": 4, 
+        "description": "<p>Le saka saka est un plat d&rsquo;Afrique centrale, d&rsquo;Afrique de l’Ouest et des Comores à base de feuilles de manioc pilées puis bouillies. L’appellation de ce plat varie d&rsquo;un pays à l’autre, d&rsquo;une langue africaine à l’autre</p>", 
+        "image": {
+            "__typename": "MediaItem", 
+            "id": "cG9zdDozMzc=", 
+            "uri": "/?attachment_id=337", 
+            "mediaItemId": 337, 
+            "sourceUrl": "https://africultureshop.com/wp-content/uploads/2022/11/pondu-1.jpeg"
+        }
+    }
+}

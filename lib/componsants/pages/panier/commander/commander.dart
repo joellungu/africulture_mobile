@@ -44,15 +44,6 @@ class Commander extends StatelessWidget {
         ),
         elevation: 0,
         centerTitle: true,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: <Color>[Colors.yellow.shade700, Colors.black],
-            ),
-          ),
-        ),
       ),
       body: Column(
         children: [

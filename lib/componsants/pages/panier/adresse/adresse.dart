@@ -152,7 +152,7 @@ class _Adresse extends State<Adresse> {
                           ),
                           children: [
                             TextSpan(
-                              text: "${p['prixMar']}\n",
+                              text: "${p['prix']}\n",
                               style: TextStyle(
                                 color: Colors.grey.shade700,
                                 fontWeight: FontWeight.normal,

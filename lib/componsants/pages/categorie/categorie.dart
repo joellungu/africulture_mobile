@@ -1,7 +1,7 @@
+import 'package:africulture_mobile/componsants/widgets/carte_produit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../widgets/carte_categorie.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'categorie_controller.dart';
 import 'liste_categorie.dart';
 //import 'package:get/get.dart';
@@ -23,77 +23,187 @@ class _Categories extends State<Categories> with TickerProviderStateMixin {
   void initState() {
     //
     controller = TabController(
-        length: categorieController.listecat.value.length, vsync: this);
+        // ignore: invalid_use_of_protected_member
+        length: categorieController.listecat.value.length,
+        vsync: this);
     //
     super.initState();
     //
   }
+
+  String requete = """
+query getProduct {
+  productCategories {
+    edges {
+      node {
+        id
+        databaseId
+        name
+        image {
+          uri
+        }
+        products {
+          edges {
+            node {
+              databaseId
+              id
+              name
+                ... on SimpleProduct {
+                id
+                name
+                price(format: RAW)
+                }
+              description
+              image {
+                id
+                uri
+                mediaItemId
+                sourceUrl
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}""";
 
   //
   @override
   Widget build(BuildContext context) {
     //categorieController.getCategorie();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Categorie",
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: <Color>[Colors.yellow.shade700, Colors.black],
+    return Query(
+      options: QueryOptions(
+        document: gql(requete), // this is the query string you just created
+        // variables: {
+        //   //'nRepositories': 50,
+        // },
+        // pollInterval: const Duration(seconds: 10),
+      ),
+      // Just like in apollo refetch() could be used to manually trigger a refetch
+      // while fetchMore() can be used for pagination purpose
+      builder: (QueryResult result,
+          {VoidCallback? refetch, FetchMore? fetchMore}) {
+        if (result.hasException) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                "categorie".tr,
+              ),
+            ),
+            body: Text('${result.exception.toString()}'),
+          );
+        }
+
+        if (result.isLoading) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                "categorie".tr,
+              ),
+            ),
+            body: const Center(
+              child: SizedBox(
+                height: 40,
+                width: 40,
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          );
+        }
+
+        List? repositories = result.data?['productCategories']?['edges'];
+
+        //print("La reponse du serveur: $repositories");
+        if (repositories == null) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                "categorie".tr,
+              ),
+            ),
+            body: Text('Vide'),
+          );
+        }
+
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              "categorie".tr,
+            ),
+            //backgroundColor: Colors.white,
+            elevation: 0,
+            centerTitle: true,
+            // flexibleSpace: Container(
+            //   decoration: BoxDecoration(
+            //     gradient: LinearGradient(
+            //       begin: Alignment.centerLeft,
+            //       end: Alignment.centerRight,
+            //       colors: <Color>[Colors.yellow.shade700, Colors.black],
+            //     ),
+            //   ),
+            // ),
+            bottom: TabBar(
+              isScrollable: true,
+              controller: controller,
+              indicatorWeight: 1,
+              labelStyle: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w700,
+              ),
+              //indicator: BoxDecoration(),
+              indicatorColor: Colors.black,
+              indicatorSize: TabBarIndicatorSize.tab,
+              labelColor: Colors.green.shade700,
+              unselectedLabelColor: Colors.grey.shade800,
+              unselectedLabelStyle: const TextStyle(
+                fontWeight: FontWeight.normal,
+                color: Colors.grey,
+              ),
+              tabs: List.generate(repositories.length, (index) {
+                return Tab(
+                  text: "${repositories[index]["node"]["name"]}".tr,
+                );
+              }),
             ),
           ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.search,
-              color: Colors.white,
+          body: TabBarView(
+            controller: controller,
+            children: List.generate(
+              categorieController.listecat.value.length,
+              (index) {
+                List produits =
+                    repositories[index]["node"]["products"]["edges"];
+                return GridView.count(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 2,
+                  crossAxisSpacing: 2,
+                  childAspectRatio: 0.5,
+                  children: List.generate(
+                    produits.length,
+                    (index) => Card(
+                      elevation: 0,
+                      child: InkWell(
+                          onTap: () {
+                            //Get.to(() => Produit());
+                          },
+                          child: CarteProduite(produits[index], true)),
+                    ),
+                  ),
+                );
+              },
             ),
-          )
-        ],
-        bottom: TabBar(
-          isScrollable: true,
-          controller: controller,
-          indicatorWeight: 1,
-          labelStyle: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w700,
           ),
-          //indicator: BoxDecoration(),
-          indicatorColor: Colors.white,
-          labelColor: Colors.grey.shade300,
-          unselectedLabelColor: Colors.grey.shade800,
-          unselectedLabelStyle: const TextStyle(
-            fontWeight: FontWeight.normal,
-            color: Colors.grey,
-          ),
-          tabs:
-              List.generate(categorieController.listecat.value.length, (index) {
-            return Tab(
-              text: categorieController.listecat.value[index]["titre"],
-            );
-          }),
-        ),
-      ),
-      body: TabBarView(
-        controller: controller,
-        children: List.generate(
-          categorieController.listecat.value.length,
-          (index) {
-            return ListageCategorie(
-                categorieController.listecat.value[index]["titre"]);
-          },
-        ),
-      ),
+        );
+        ListView.builder(
+            itemCount: repositories.length,
+            itemBuilder: (context, index) {
+              final repository = repositories[index]["node"];
+
+              return Text(repository['name'] ?? '');
+            });
+      },
     );
   }
 }

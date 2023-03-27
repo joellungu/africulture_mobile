@@ -11,7 +11,8 @@ import 'categorie_controller.dart';
 
 class ListageCategorie extends StatefulWidget {
   String? cat;
-  ListageCategorie(this.cat);
+  int id;
+  ListageCategorie(this.cat, this.id);
   @override
   State<StatefulWidget> createState() {
     return _ListageCategorie();
@@ -26,7 +27,9 @@ class _ListageCategorie extends State<ListageCategorie> {
     //
     CategorieController categorieController = Get.find();
     //
-    Response rep = await demandeurConnexion.getProduitCategorie(categorie);
+
+    //
+    Response rep = await demandeurConnexion.getProduitCategorie(widget.id);
     if (rep.statusCode == 200 || rep.statusCode == 201) {
       List l = jsonDecode(rep.bodyString!);
       print(l);

@@ -39,7 +39,6 @@ class Validation extends StatelessWidget {
         title: const Text(
           "Validation",
         ),
-        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(
@@ -51,15 +50,6 @@ class Validation extends StatelessWidget {
           },
         ),
         centerTitle: true,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: <Color>[Colors.yellow.shade700, Colors.black],
-            ),
-          ),
-        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),

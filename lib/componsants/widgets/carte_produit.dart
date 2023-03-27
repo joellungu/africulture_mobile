@@ -28,6 +28,7 @@ class _CarteProduite extends State<CarteProduite> {
     // TODO: implement initState
     super.initState();
     //
+    print("le map: ${widget.p}");
     //Timer(const Duration(seconds: 2), () {
     //setState(() {
     //  annimation = false;
@@ -57,8 +58,8 @@ class _CarteProduite extends State<CarteProduite> {
                 flex: 6,
                 child: Container(
                   child: Image.network(
-                    "${Utils.url}/produit/image/${widget.p['id']}/img0",
-                    fit: BoxFit.cover,
+                    "${widget.p['node']['image']['sourceUrl']}",
+                    fit: BoxFit.contain,
                   ),
                 ),
               ),
@@ -73,7 +74,7 @@ class _CarteProduite extends State<CarteProduite> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "${widget.p['titreMar']}",
+                          "${widget.p['node']['name']}",
                           textAlign: TextAlign.left,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
@@ -87,71 +88,71 @@ class _CarteProduite extends State<CarteProduite> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "${widget.p['nomBoutique']}",
+                          "\$ ${widget.p['node']['price']}",
                           textAlign: TextAlign.left,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "${widget.p['deviseMar']} ${widget.p['prixMar']}",
-                            style: TextStyle(
-                              color: Colors.grey.shade700,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.p['stockMar'] != 0
-                                ? 'En Stock'
-                                : 'Plus en stock',
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              color: Colors.green.shade700,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 11,
-                            ),
-                          )
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Icon(
-                            Icons.star_border_outlined,
-                            size: 15,
-                            color: Colors.yellow.shade700,
-                          ),
-                          Icon(
-                            Icons.star_border_outlined,
-                            size: 15,
-                            color: Colors.yellow.shade700,
-                          ),
-                          Icon(
-                            Icons.star_border_outlined,
-                            size: 15,
-                            color: Colors.yellow.shade700,
-                          ),
-                          Icon(
-                            Icons.star_border_outlined,
-                            size: 15,
-                            color: Colors.yellow.shade700,
-                          ),
-                          Icon(
-                            Icons.star_border_outlined,
-                            size: 15,
-                            color: Colors.yellow.shade700,
-                          )
-                        ],
-                      )
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.start,
+                      //   children: [
+                      //     Text(
+                      //       "\$ ${widget.p['node']['pridescriptionce']}",
+                      //       style: TextStyle(
+                      //         color: Colors.grey.shade700,
+                      //         fontWeight: FontWeight.bold,
+                      //         fontSize: 15,
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.start,
+                      //   children: [
+                      //     // Text(
+                      //     //   widget.p['stock'] != 0
+                      //     //       ? 'En Stock'
+                      //     //       : 'Plus en stock',
+                      //     //   textAlign: TextAlign.left,
+                      //     //   style: TextStyle(
+                      //     //     color: Colors.green.shade700,
+                      //     //     fontWeight: FontWeight.normal,
+                      //     //     fontSize: 11,
+                      //     //   ),
+                      //     // )
+                      //   ],
+                      // ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.start,
+                      //   children: [
+                      //     // Icon(
+                      //     //   Icons.star_border_outlined,
+                      //     //   size: 15,
+                      //     //   color: Colors.yellow.shade700,
+                      //     // ),
+                      //     // Icon(
+                      //     //   Icons.star_border_outlined,
+                      //     //   size: 15,
+                      //     //   color: Colors.yellow.shade700,
+                      //     // ),
+                      //     // Icon(
+                      //     //   Icons.star_border_outlined,
+                      //     //   size: 15,
+                      //     //   color: Colors.yellow.shade700,
+                      //     // ),
+                      //     // Icon(
+                      //     //   Icons.star_border_outlined,
+                      //     //   size: 15,
+                      //     //   color: Colors.yellow.shade700,
+                      //     // ),
+                      //     // Icon(
+                      //     //   Icons.star_border_outlined,
+                      //     //   size: 15,
+                      //     //   color: Colors.yellow.shade700,
+                      //     // )
+                      //   ],
+                      // )
                     ],
                   ),
                 ),

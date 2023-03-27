@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "296202906706",
+    "project_id": "africulture-49c6b",
+    "storage_bucket": "africulture-49c6b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296202906706:android:6d152d437c247f3462038b",
+        "android_client_info": {
+          "package_name": "com.example.africulture_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "296202906706-ffvecqlbkmnhadvpk9mjhh5d13d5i4kt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.africulture_mobile",
+            "certificate_hash": "81af60a37508efcf20ac5244794c018cccf89c47"
+          }
+        },
+        {
+          "client_id": "296202906706-r759fj502gmpm026tda0uafsh8352d3o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8gLC2pX9IixhSLR0psLzGZjwy3LBe3U8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "296202906706-r759fj502gmpm026tda0uafsh8352d3o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "296202906706-62gb17v0eq4jnquvug6r7c5mglo54vsr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.africultureMobile"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

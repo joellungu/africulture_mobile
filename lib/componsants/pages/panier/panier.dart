@@ -7,35 +7,37 @@ import '../../widgets/carte_panier.dart';
 import 'commander/commander.dart';
 import 'panier_controller.dart';
 
-class Pagner extends StatelessWidget {
+class Panier extends StatelessWidget {
   PanierController panierController = Get.find();
   ProfileControllers profileControllers = Get.find();
+  //
+  List l = ["DHL", "Boloré", "POST-RDC", "Autre"];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Mon panier",
+          "panier".tr,
         ),
-        backgroundColor: Colors.white,
+        //backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: <Color>[Colors.yellow.shade700, Colors.black],
-            ),
-          ),
-        ),
+        // flexibleSpace: Container(
+        //   decoration: BoxDecoration(
+        //     gradient: LinearGradient(
+        //       begin: Alignment.centerLeft,
+        //       end: Alignment.centerRight,
+        //       colors: <Color>[Colors.yellow.shade700, Colors.black],
+        //     ),
+        //   ),
+        // ),
       ),
       body: Column(
         children: [
           Container(
             height: 50,
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 10,
               right: 10,
             ),
@@ -44,18 +46,22 @@ class Pagner extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text.rich(
-                    TextSpan(text: "TOTAL   ", children: [
-                      TextSpan(
+                    TextSpan(
+                      text: "TOTAL   ",
+                      children: [
+                        TextSpan(
                           text:
-                              "${panierController.listeProduit.value.length} Articles")
-                    ]),
+                              "${panierController.listeProduit.value.length} Articles",
+                        )
+                      ],
+                    ),
                   ),
                   TextButton(
                     onPressed: () {
                       panierController.listeProduit.clear();
                     },
                     child: Text(
-                      "VIDER LE PANIER",
+                      "vider_panier".tr,
                       style: TextStyle(
                         color: Colors.red.shade700,
                       ),
@@ -82,14 +88,14 @@ class Pagner extends StatelessWidget {
                     }),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                       left: 20,
                       right: 20,
                     ),
                     child: InkWell(
                       onTap: () {
                         if (panierController.listeProduit.value.isEmpty) {
-                          Get.snackbar("Panier", "Le Panier est vide !");
+                          Get.snackbar("panier".tr, "vider_panier".tr);
                         } else {
                           //
                           Map<dynamic, dynamic> m =
@@ -111,8 +117,8 @@ class Pagner extends StatelessWidget {
                         alignment: Alignment.center,
                         height: 40,
                         child: Text(
-                          "Passer la commander",
-                          style: TextStyle(
+                          "passer_commande".tr,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.normal,
                             fontSize: 15,

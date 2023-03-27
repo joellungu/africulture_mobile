@@ -1,12 +1,12 @@
 import 'dart:async';
-import 'package:africulture_mobile/componsants/pages/principale.dart';
+import 'dart:convert';
 import 'package:africulture_mobile/componsants/pages/profil/profile_controller.dart';
-import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../contrôler/splash_controller.dart';
 import 'login_controller.dart';
+import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
   @override
@@ -22,6 +22,37 @@ class _Login extends State<Login> {
   //
   LoginController loginController = Get.find();
   //
+  ProfileControllers profileController = Get.find();
+  //
+  //
+  final _formKey = GlobalKey<FormState>();
+  ////,,,
+  final username = TextEditingController();
+  //
+  final firstName = TextEditingController();
+  //
+  final nickname = TextEditingController();
+  //
+  final lastName = TextEditingController();
+  //
+  final email = TextEditingController();
+  //
+  final mobile = TextEditingController();
+  //
+  final mdp = TextEditingController();
+  final mdpC = TextEditingController();
+  //
+  bool accepte = false;
+  bool showCode1 = false;
+  bool showCode2 = false;
+  //
+  final code_ref = TextEditingController();
+
+  RxString cd = "+243".obs;
+  String sexe = "F";
+  String dateNaissance = "";
+  //
+  //final countryPicker = const FlCountryCodePicker();
 
   @override
   void initState() {
@@ -44,280 +75,466 @@ class _Login extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-        title: Text(
-          "Connexion",
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        elevation: 0,
-        centerTitle: true,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: <Color>[
-                Colors.yellow.shade700,
-                Colors.black,
-              ],
-            ),
-          ),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SeLoger(),
-      ),
-    );
-  }
-}
-
-class SeLoger extends StatelessWidget {
-  //
-  final _formKey = GlobalKey<FormState>();
-  final phone = TextEditingController();
-  final nom = TextEditingController();
-  RxBool dejaLog = false.obs;
-  late CountryCode countryCode = CountryCode(
-      code: "CD", dialCode: "+243", name: "République démocratique du Congo");
-  //
-  LoginController loginController = Get.find();
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Obx(
-            () => CheckboxListTile(
-              value: dejaLog.value,
-              title: const Text("J'ai déjà un compte"),
-              subtitle: const Text("J'ai déjà un compte"),
-              dense: true,
-              onChanged: (e) {
-                dejaLog.value = e!;
-              },
-            ),
-          ),
-          Obx(
-            () => dejaLog.value
-                ? Container()
-                : TextFormField(
-                    controller: nom,
-                    decoration: const InputDecoration(
-                      hintText: 'Nom complet',
-                      labelText: 'Nom complet',
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Entrez votre mot de passe';
-                      }
-
-                      return null;
-                    },
-                  ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                flex: 4,
-                child: CountryCodePicker(
-                  onChanged: (p) {
-                    countryCode = p;
-                    print(p.code);
-                    print(p.dialCode);
-                    print(p.name);
-                    print(p.flagUri);
-                  },
-                  // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                  initialSelection: 'CD',
-                  favorite: ['+243', 'FR'],
-                  // optional. Shows only country name and flag
-                  showCountryOnly: false,
-                  // optional. Shows only country name and flag when popup is closed.
-                  showOnlyCountryWhenClosed: false,
-                  // optional. aligns the flag and the Text left
-                  alignLeft: false,
-                ),
-              ),
-              Expanded(
-                flex: 9,
-                child: TextFormField(
-                  controller: phone,
-                  decoration: const InputDecoration(
-                    hintText: 'Phone',
-                    labelText: 'Phone',
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Entrez votre mot de passe';
-                    }
-
-                    return null;
-                  },
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          ElevatedButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                /*
-                        Timer(const Duration(seconds: 4), () {
-                          Get.snackbar("Correct", "Un simple message!");
-                        });
-                        */
-                //Get.off(Accueil());
-                loginController.code.value = false;
-                //
-                Get.dialog(
-                  const Center(
-                    child: SizedBox(
-                      height: 30,
-                      width: 30,
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                  name: "Attente...",
-                );
-
-                //
-                if (dejaLog.value) {
-                  loginController.log(
-                      "${countryCode.code}", phone.text, '', dejaLog.value);
-                } else {
-                  loginController.log("${countryCode.code}", phone.text,
-                      nom.text, dejaLog.value);
-                }
-                //
-                //splashController.seLoger(true);
-              }
-            },
-            child: const Text("S'authentifier"),
-          ),
-          const SizedBox(
-            height: 40,
-          ),
-        ],
-      ),
-    );
-  }
-  //
-}
-
-class Certifier extends StatelessWidget {
-  final _formKey = GlobalKey<FormState>();
-  //
-  LoginController loginController = Get.find();
-  ProfileControllers profileControllers = Get.find();
-  //
-  final box = GetStorage();
-
-  final code = TextEditingController();
-  //
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-        title: Text(
-          "Confirmer",
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        elevation: 0,
-        centerTitle: true,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: <Color>[
-                Colors.yellow.shade700,
-                Colors.black,
-              ],
-            ),
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Form(
-            key: _formKey,
-            child: Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.all(30),
-              height: 180,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  TextFormField(
-                    controller: code,
-                    decoration: const InputDecoration(
-                      hintText: 'Code',
-                      labelText: 'Code',
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Entrez votre mot de passe';
-                      }
-
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  ElevatedButton(
-                      onPressed: () {
-                        final box = GetStorage();
-                        //
-                        //Map<String, dynamic> pr = box.read("userauth");
-
-                        if (_formKey.currentState!.validate()) {
-                          if (loginController.password.value == code.text) {
-                            Map<String, dynamic> p = box.read("userauth");
-                            box.write("utilisateur", p);
-                            profileControllers.checkAffiche(); //
-                            Get.offAll(Principale());
-                          }
-                          //loginController
-                          //
-                        }
-                      },
-                      child: const Text("Valider"))
+    return Container(
+      color: Colors.yellow.shade700, // Status bar color
+      child: SafeArea(
+        //
+        left: false,
+        right: false,
+        bottom: false,
+        child: Scaffold(
+          body: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.yellow.shade700,
+                  Color(0xFFFFFFFF),
                 ],
+                begin: FractionalOffset(0.0, 0.0),
+                end: FractionalOffset(1.0, 1.0),
+                stops: [0.0, 1.0],
+                tileMode: TileMode.clamp,
               ),
-            )),
+            ),
+            child: Stack(
+              children: [
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 55,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              //
+                              Get.back();
+                              //
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.only(left: 10),
+                              //width: 100,
+                              height: 40,
+                              alignment: Alignment.center,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(
+                                    Icons.arrow_back_ios,
+                                    size: 20,
+                                    color: Colors.black,
+                                  ),
+                                  Text(
+                                    "Inscription",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        padding: const EdgeInsets.all(30),
+                        // ignore: sort_child_properties_last
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                          ),
+                        ),
+                        child: SingleChildScrollView(
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                const Text(
+                                  "Informations personnelles",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    labelText: "Votre d'utilisateur",
+                                    // border: OutlineInputBorder(
+                                    //   borderRadius: BorderRadius.circular(10),
+                                    // ),
+                                    prefixIcon: Icon(Icons.person),
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return "Veuillez saisir votre nom d'utilisateur";
+                                    }
+                                    return null;
+                                  },
+                                  controller: username,
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    labelText: "Votre Postnom",
+                                    // border: OutlineInputBorder(
+                                    //   borderRadius: BorderRadius.circular(10),
+                                    // ),
+                                    prefixIcon: Icon(Icons.person),
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return "Veuillez saisir votre Postnom";
+                                    }
+                                    return null;
+                                  },
+                                  controller: lastName,
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    labelText: "Votre prénom",
+                                    // border: OutlineInputBorder(
+                                    //   borderRadius: BorderRadius.circular(10),
+                                    // ),
+                                    prefixIcon: Icon(Icons.person),
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return "Veuillez saisir votre prénom";
+                                    }
+                                    return null;
+                                  },
+                                  controller: firstName,
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    labelText: "Votre surnom",
+                                    // border: OutlineInputBorder(
+                                    //   borderRadius: BorderRadius.circular(10),
+                                    // ),
+                                    prefixIcon: Icon(Icons.person),
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return "Veuillez saisir votre surnom";
+                                    }
+                                    return null;
+                                  },
+                                  controller: nickname,
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                TextFormField(
+                                  keyboardType: TextInputType.emailAddress,
+                                  decoration: InputDecoration(
+                                    labelText: "Email",
+                                    // border: OutlineInputBorder(
+                                    //   borderRadius: BorderRadius.circular(10),
+                                    // ),
+                                    prefixIcon: Icon(Icons.email),
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return "Veuillez saisir votre email";
+                                    }
+                                    return null;
+                                  },
+                                  controller: email,
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                TextFormField(
+                                  obscureText: showCode1,
+                                  keyboardType: TextInputType.emailAddress,
+                                  decoration: InputDecoration(
+                                    labelText: "Mot de passe",
+                                    // border: OutlineInputBorder(
+                                    //   borderRadius: BorderRadius.circular(10),
+                                    // ),
+                                    suffix: InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          showCode1 = !showCode1;
+                                        });
+                                      },
+                                      child: const Icon(
+                                        Icons.remove_red_eye,
+                                      ),
+                                    ),
+                                    prefixIcon: const Icon(Icons.lock),
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return "Veuillez saisir votre mot de passe";
+                                    } else if (value != mdpC.text) {
+                                      return "Le mot de passe n'est pas identique";
+                                    }
+                                    return null;
+                                  },
+                                  controller: mdp,
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                TextFormField(
+                                  obscureText: showCode2,
+                                  keyboardType: TextInputType.emailAddress,
+                                  decoration: InputDecoration(
+                                    labelText: "Confirmez mot de passe",
+                                    // border: OutlineInputBorder(
+                                    //   borderRadius: BorderRadius.circular(10),
+                                    // ),
+                                    suffix: InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          showCode2 = !showCode2;
+                                        });
+                                      },
+                                      child: const Icon(
+                                        Icons.remove_red_eye,
+                                      ),
+                                    ),
+                                    prefixIcon: Icon(Icons.lock),
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return "Veuillez saisir votre mot de passe pour confirmer";
+                                    } else if (value != mdp.text) {
+                                      return "Le mot de passe n'est pas identique";
+                                    }
+                                    return null;
+                                  },
+                                  controller: mdpC,
+                                ),
+                                // const SizedBox(
+                                //   height: 20,
+                                // ),
+                                // TextField(
+                                //   keyboardType: TextInputType.number,
+                                //   decoration: const InputDecoration(
+                                //     labelText: "Code de référence (Facultatif)",
+                                //     // border: OutlineInputBorder(
+                                //     //   borderRadius: BorderRadius.circular(10),
+                                //     // ),
+                                //     prefixIcon: Icon(
+                                //       Icons.code_outlined,
+                                //     ),
+                                //   ),
+                                //   controller: code_ref,
+                                // ),
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: Container(
+                                        alignment: Alignment.topCenter,
+                                        child: Checkbox(
+                                          value: accepte,
+                                          onChanged: (c) {
+                                            //
+                                            setState(() {
+                                              print(c);
+                                              accepte = c as bool;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 8,
+                                      child: RichText(
+                                        text: TextSpan(
+                                          text: "J'ai lu et j'accepte la ",
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 17,
+                                          ),
+                                          children: [
+                                            WidgetSpan(
+                                              child: InkWell(
+                                                onTap: () {
+                                                  //Get.to(Politique());
+                                                },
+                                                child: Text(
+                                                  "Politique de confidencialité ",
+                                                  style: TextStyle(
+                                                    color: Colors.red.shade700,
+                                                    fontSize: 17,
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            const TextSpan(
+                                              text: " et les ",
+                                            ),
+                                            WidgetSpan(
+                                              child: InkWell(
+                                                onTap: () {
+                                                  //
+                                                },
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    //Get.to(Termes());
+                                                  },
+                                                  child: Text(
+                                                    "Conditions générales ",
+                                                    style: TextStyle(
+                                                      color:
+                                                          Colors.red.shade700,
+                                                      fontSize: 17,
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                ElevatedButton(
+                                  style: ButtonStyle(
+                                    elevation: MaterialStateProperty.all(0),
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    backgroundColor: MaterialStateProperty.all(
+                                      Colors.yellow.shade700,
+                                    ),
+                                    overlayColor: MaterialStateProperty.all(
+                                      Colors.red.shade100,
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      //
+                                      Get.dialog(
+                                        const Center(
+                                          child: SizedBox(
+                                            height: 40,
+                                            width: 40,
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        ),
+                                      );
+                                      /**
+                                       * var headers = {
+  'Content-Type': 'application/json'
+};
+var request = http.Request('POST', Uri.parse('https://africultureshop.com/graphql'));
+request.body = '''{"query":"mutation MyMutation {\\r\\n  __typename\\r\\n  registerCustomer(input: {email: \\"pepe@gmail.com\\", firstName: \\"pepe\\", username: \\"Jean\\", lastName: \\"\\", nickname: \\"\\", password: \\"\\"}) {\\r\\n    customer {\\r\\n      firstName\\r\\n      email\\r\\n      id\\r\\n      databaseId\\r\\n    }\\r\\n  }\\r\\n}\\r\\n","variables":{}}''';
+
+request.headers.addAll(headers);
+                                       */
+                                      var headers = {
+                                        'Authorization':
+                                            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYWZyaWN1bHR1cmVzaG9wLmNvbSIsImlhdCI6MTY3MzM3NzM2NiwibmJmIjoxNjczMzc3MzY2LCJleHAiOjE2NzMzNzc2NjYsImRhdGEiOnsidXNlciI6eyJpZCI6IjEifX19.2Uf3qcSMmDE0HJof7U7N0ADnrkiXUeFWeFappR6zaak',
+                                        'Content-Type': 'application/json'
+                                      };
+                                      var request = http.Request(
+                                          'POST',
+                                          Uri.parse(
+                                              'https://africultureshop.com/graphql'));
+                                      request.body =
+                                          '''{"query":"mutation CreateUser {\\r\\n  createUser(input: {username: \\"${username.text}\\", firstName: \\"${firstName.text}\\", nickname: \\"${nickname.text}\\", password: \\"${mdpC.text}\\", roles: \\"Client\\", email: \\"${email.text}\\", lastName: \\"${lastName.text}\\"}) {\\r\\n    user {\\r\\n      email\\r\\n      firstName\\r\\n      id\\r\\n      nickname\\r\\n      username\\r\\n      databaseId\\r\\n      jwtAuthToken\\r\\n      jwtRefreshToken\\r\\n    }\\r\\n  }\\r\\n}","variables":{}}''';
+
+                                      request.headers.addAll(headers);
+
+                                      http.StreamedResponse response =
+                                          await request.send();
+
+                                      if (response.statusCode == 200) {
+                                        var box = GetStorage();
+                                        String m = await response.stream
+                                            .bytesToString();
+                                        print("La reponse: $m");
+                                        Map e = json.decode(m);
+                                        box.write("authToken",
+                                            "${e['data']['login']['authToken']}");
+                                        //
+                                        profileController.infosPerso.value =
+                                            e['data']['login']['user'];
+                                        box.write("name",
+                                            e['data']['login']['user']['name']);
+                                        //
+                                        Get.back();
+                                        Get.back();
+                                        print(m);
+                                        Get.snackbar("Succès",
+                                            "Bienvenu ${e['data']['login']['user']['name']}");
+                                      } else {
+                                        print(response.reasonPhrase);
+                                        Get.back();
+                                        Get.snackbar("Erreur",
+                                            "Bienvenu ${response.reasonPhrase}");
+                                      }
+                                      /**/
+                                    }
+                                  },
+                                  child: Container(
+                                    height: 50,
+                                    alignment: Alignment.center,
+                                    child: const Text(
+                                      "Envoyer",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
 }
-//

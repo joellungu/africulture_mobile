@@ -15,12 +15,36 @@ class CategorieController extends GetxController {
   getCategorie() {
     /*
     */
-    listecat.value.add({"icon": Icons.art_track, "titre": "Art"});
-    listecat.value.add({"icon": Icons.snowshoeing, "titre": "Vetements"});
-    listecat.value.add({"icon": Icons.shield_rounded, "titre": "Alimentaire"});
-    listecat.value.add({"icon": Icons.add_circle, "titre": "Mobilier"});
-    listecat.value.add({"icon": Icons.card_giftcard, "titre": "Décoration"});
-    listecat.value.add({"icon": Icons.collections_sharp, "titre": "Autre"});
+    listecat.value.add({
+      "icon": Icons.art_track,
+      "titre": "c1",
+      "id": "1",
+    });
+    listecat.value.add({
+      "icon": Icons.snowshoeing,
+      "titre": "c2",
+      "id": "2",
+    });
+    listecat.value.add({
+      "icon": Icons.shield_rounded,
+      "titre": "c3",
+      "id": "3",
+    });
+    listecat.value.add({
+      "icon": Icons.add_circle,
+      "titre": "c4",
+      "id": "4",
+    });
+    listecat.value.add({
+      "icon": Icons.card_giftcard,
+      "titre": "c5",
+      "id": "5",
+    });
+    listecat.value.add({
+      "icon": Icons.collections_sharp,
+      "titre": "c6",
+      "id": "6",
+    });
   }
 
   //
@@ -44,7 +68,7 @@ class DemandeurConnexion extends GetConnect {
   Future<Response> getParCategorie(String categorie) async => await get(
         "${Utils.url}/produit/categorie/$categorie",
       );
-  Future<Response> getProduitCategorie(String categorie) async => await get(
+  Future<Response> getProduitCategorie(int categorie) async => await get(
         "${Utils.url}/produit/categorie/$categorie",
       );
 

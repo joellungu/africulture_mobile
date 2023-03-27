@@ -17,18 +17,8 @@ class Propos extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-        backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: <Color>[Colors.yellow.shade700, Colors.black],
-            ),
-          ),
-        ),
       ),
       body: ListView(
         padding: EdgeInsets.all(10),

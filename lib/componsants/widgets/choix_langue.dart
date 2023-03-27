@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
-
-enum BestTutorSite { en, fr, es }
+enum BestTutorSite { en, fr }
 
 class ChoixLangue extends StatefulWidget {
   //MyStatefulWidget({Key key}) : super(key: key);
@@ -11,8 +12,15 @@ class ChoixLangue extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<ChoixLangue> {
+  BestTutorSite _site = BestTutorSite.fr;
+  var box = GetStorage();
 
-  BestTutorSite _site = BestTutorSite.en;
+  @override
+  void initState() {
+    _site = box.read("langue") == "en" ? BestTutorSite.en : BestTutorSite.fr;
+    //
+    super.initState();
+  }
 
   Widget build(BuildContext context) {
     return Column(
@@ -26,6 +34,9 @@ class _MyStatefulWidgetState extends State<ChoixLangue> {
             onChanged: (BestTutorSite? value) {
               setState(() {
                 _site = value!;
+                box.write("langue", "en");
+                var locale = const Locale('en', 'US');
+                Get.updateLocale(locale);
               });
             },
           ),
@@ -38,18 +49,9 @@ class _MyStatefulWidgetState extends State<ChoixLangue> {
             onChanged: (BestTutorSite? value) {
               setState(() {
                 _site = value!;
-              });
-            },
-          ),
-        ),
-        ListTile(
-          title: const Text('Espagnol'),
-          leading: Radio(
-            value: BestTutorSite.es,
-            groupValue: _site,
-            onChanged: (BestTutorSite? value) {
-              setState(() {
-                _site = value!;
+                box.write("langue", "fr");
+                var locale = const Locale('fr', 'FR');
+                Get.updateLocale(locale);
               });
             },
           ),

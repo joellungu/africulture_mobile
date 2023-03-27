@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:africulture_mobile/componsants/pages/principale.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../../utile/utils.dart';
 import '../../contrôler/splash_controller.dart';
 import '../profil/profile_controller.dart';
 import 'login.dart';
+import 'verification_otp.dart';
 
 class LoginController extends GetxController {
   SplashController splashController = Get.find();
@@ -24,7 +26,7 @@ class LoginController extends GetxController {
     profileController = Get.find();
   }
 
-  log(String codeP, String numero, String nom, bool dejaLog) async {
+  log(String codeP, String numero) async {
     //print("utilisateur/auth/$email/$mdp");
     var rng = Random();
     int c1 = rng.nextInt(9);
@@ -37,56 +39,43 @@ class LoginController extends GetxController {
     password.value = c;
     print(c);
     //
-    Response response;
-    if (dejaLog) {
-      //
-
-      response = await loginConnexion.log1(codeP, numero, dejaLog, c);
-    } else {
-      //
-      response = await loginConnexion.log2(codeP, numero, nom, c, dejaLog);
-    }
+    Response response = await loginConnexion.check(codeP, numero);
 
     print(response.statusCode);
     print(response.body);
 
     //
+    Get.back();
+    //
     if (response.isOk) {
       //
-      box.write("userauth", response.body); //
-      //print(response.body);
+      //box.write("userauth", response.body); //
+      Map rep = response.body;
+      //print(response.body);VerificationOtp
 
-      Get.off(Certifier());
-      Get.snackbar(
-        "Votre code",
-        "$c",
-        duration: Duration(seconds: 7),
-      );
-    } else if (response.statusCode == 400) {
-      message(
-        "Erreur",
-        "Ce numéro à déjà un compte veuillez vous authentifier",
-      );
+      Get.off(VerificationOtp(true, numero, codeP));
+      // Get.snackbar(
+      //   "Votre code",
+      //   "$c",
+      //   duration: Duration(seconds: 7),
+      // );
     } else if (response.statusCode == 401) {
+      Get.off(VerificationOtp(false, numero, codeP));
+      // message(
+      //   "Erreur",
+      //   "Ce numéro à déjà un compte veuillez vous authentifier",
+      // );
+    } else {
       message(
         "Erreur",
-        "Ce numéro n'existe pas enregistrez-vous !",
+        "Un problème est survenu lors de la requete",
       );
-    } else {
-      //
-      //Get.back();
-      message(
-        "Erreur serveur",
-        "Un problème lors de la connexion au serveur code: ${response.statusCode}",
-      );
-      //
-      print(response.body);
     }
     //
     //splashController.seLoger(true);
   }
 
-  enregistrement(Map<String, dynamic> nUtilisateur) async {
+  enregistrement(Map nUtilisateur) async {
     Response response = await loginConnexion.enregistrement(nUtilisateur);
     //
     if (response.isOk) {
@@ -95,6 +84,45 @@ class LoginController extends GetxController {
       Map<String, dynamic> mapRep = response.body;
       //Enregistrement reussit
       save_n_utilisateur(mapRep);
+      Get.off(() => Principale());
+      message(
+        "Enregistrement",
+        "Compte crée avec succès",
+      );
+      print(response.body);
+    } else if (response.statusCode == 300) {
+      message(
+        "Problème d'enregistrement",
+        "Cet adresse mail a déjà un compte ${response.statusCode}",
+      );
+    } else {
+      //
+      //Get.back();
+      message(
+        "Problème d'enregistrement",
+        "Code d'erreur: ${response.statusCode}",
+      );
+      //
+      print(response.body);
+    }
+    //
+    //splashController.seLoger(true);
+  }
+
+  updates(Map nUtilisateur) async {
+    Response response = await loginConnexion.updates(nUtilisateur);
+    //
+    if (response.isOk) {
+      //
+      //String rep = response.body;
+      Map<String, dynamic> mapRep = response.body;
+      //Enregistrement reussit
+      save_n_utilisateur(mapRep);
+      Get.off(() => Principale());
+      message(
+        "Enregistrement",
+        "Compte crée avec succès",
+      );
       print(response.body);
     } else if (response.statusCode == 300) {
       message(
@@ -148,7 +176,12 @@ class LoginConnexion extends GetConnect {
   //
   Future<Response> log1(
       String codeP, String numero, bool dejaLog, String c) async {
-    return get("${Utils.url}/utilisateur/auth/$codeP/$numero/$c");
+    return get("${Utils.url}/utilisateur/check/$codeP/$numero/$c");
+  }
+
+  //
+  Future<Response> check(String codeP, String numero) async {
+    return get("${Utils.url}/utilisateur/check/$codeP/$numero");
   }
 
   //
@@ -158,7 +191,11 @@ class LoginConnexion extends GetConnect {
   }
 
   //
-  Future<Response> enregistrement(Map<String, dynamic> nUtilisateur) {
+  Future<Response> enregistrement(Map nUtilisateur) {
     return post("${Utils.url}/utilisateur/save", jsonEncode(nUtilisateur));
+  }
+
+  Future<Response> updates(Map nUtilisateur) {
+    return put("${Utils.url}/utilisateur/update", jsonEncode(nUtilisateur));
   }
 }

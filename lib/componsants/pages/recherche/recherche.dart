@@ -1,10 +1,18 @@
+import 'package:africulture_mobile/componsants/widgets/carte_produit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../widgets/carte_produit.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:shimmer/shimmer.dart';
 import 'recherche_controller.dart';
 
-class Recherche extends StatelessWidget {
+class Recherche extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _Recherche();
+  }
+}
+
+class _Recherche extends State<Recherche> {
   List filtres = [
     "Art",
     "Vetements",
@@ -16,27 +24,105 @@ class Recherche extends StatelessWidget {
     "Autre"
   ];
 
-  RechercheController rechercheController = Get.find();
+  Widget? resulta;
+
+  load(String mot) async {
+    String requete = """query SearchProduct {
+  __typename
+  products(where: {search: "$mot"}) {
+    edges {
+      node {
+        id
+        databaseId
+        name
+      }
+    }
+  }
+}""";
+    setState(() {
+      resulta = Query(
+        options: QueryOptions(
+          document: gql(requete), // this is the query string you just created
+          // variables: {
+          //   //'nRepositories': 50,
+          // },
+          // pollInterval: const Duration(seconds: 10),
+        ),
+        // Just like in apollo refetch() could be used to manually trigger a refetch
+        // while fetchMore() can be used for pagination purpose
+        builder: (QueryResult result,
+            {VoidCallback? refetch, FetchMore? fetchMore}) {
+          if (result.hasException) {
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(
+                  "categorie".tr,
+                ),
+              ),
+              body: Text('${result.exception.toString()}'),
+            );
+          }
+
+          if (result.isLoading) {
+            return Center(
+              child: SizedBox(
+                height: 40,
+                width: 40,
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+
+          List? repositories = result.data?['productCategories']?['edges'];
+
+          //print("La reponse du serveur: $repositories");
+          if (repositories == null) {
+            return Center(
+              child: Text('Vide'),
+            );
+          }
+
+          List produits = [];
+
+          return GridView.count(
+            crossAxisCount: 2,
+            mainAxisSpacing: 2,
+            crossAxisSpacing: 2,
+            childAspectRatio: 0.5,
+            children: List.generate(
+              produits.length,
+              (index) => Card(
+                elevation: 0,
+                child: InkWell(
+                    onTap: () {
+                      //Get.to(() => Produit());
+                    },
+                    child: CarteProduite(produits[index], true)),
+              ),
+            ),
+          );
+        },
+      );
+    });
+  }
+
+  @override
+  void initState() {
+    //
+    super.initState();
+    resulta = Container();
+    //
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Recherche",
+          "recherche".tr,
         ),
-        backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: <Color>[Colors.yellow.shade700, Colors.black],
-            ),
-          ),
-        ),
       ),
       body: Padding(
         padding: EdgeInsets.only(left: 15, right: 15),
@@ -47,14 +133,21 @@ class Recherche extends StatelessWidget {
               height: 10,
             ),
             Container(
-              height: 40,
+              height: 50,
               decoration: BoxDecoration(
                 color: Colors.grey.shade200,
                 borderRadius: BorderRadius.circular(5),
               ),
               alignment: Alignment.center,
-              child: const TextField(
-                decoration: InputDecoration(
+              child: TextField(
+                onSubmitted: (r) {
+                  //controller.getProduits(r);
+                  load(r);
+                  //
+                  print(r);
+                },
+                textInputAction: TextInputAction.search,
+                decoration: const InputDecoration(
                   border: InputBorder.none,
                   prefixIcon: Icon(
                     Icons.search,
@@ -63,79 +156,9 @@ class Recherche extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              height: 40,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    child: PopupMenuButton(
-                      child: Row(
-                        children: const [
-                          Icon(
-                            Icons.add,
-                            size: 20,
-                          ),
-                          Text("Filtre"),
-                        ],
-                      ),
-                      onSelected: (s) {
-                        print(filtres[s as int]);
-                        print(rechercheController.filterHistorique.value);
-                        rechercheController.filterHistorique
-                            .add(filtres[s as int]);
-                      },
-                      itemBuilder: (context) => List.generate(
-                        filtres.length,
-                        (index) {
-                          return PopupMenuItem(
-                            value: index,
-                            child: Text("${filtres[index]}"),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                  Obx(
-                    (() => Expanded(
-                          flex: 1,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: List.generate(
-                                rechercheController.filterHistorique.length,
-                                (index) {
-                              return TextButton.icon(
-                                onPressed: () {
-                                  rechercheController.filterHistorique
-                                      .removeAt(index);
-                                },
-                                icon: Icon(
-                                  Icons.close,
-                                  size: 20,
-                                  color: Colors.black,
-                                ),
-                                label: Text(
-                                    "${rechercheController.filterHistorique.value[index]}"),
-                              );
-                            }),
-                          ),
-                        )),
-                  )
-                ],
-              ),
-            ),
             Expanded(
               flex: 1,
-              child: GridView.count(
-                crossAxisCount: 2,
-                mainAxisSpacing: 2,
-                crossAxisSpacing: 2,
-                childAspectRatio: 0.5,
-                children: List.generate(
-                  5,
-                  (index) => CarteProduite({}, true),
-                ),
-              ),
+              child: resulta!,
             )
           ],
         ),

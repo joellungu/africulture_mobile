@@ -26,9 +26,10 @@ class _CartePanier extends State<CartePanier> {
   TextEditingController quantite = TextEditingController(text: "1");
   @override
   void initState() {
-    widget.prix = RxDouble(panierController.listeProduit[widget.index]['prix']);
-    widget.resultat =
-        RxDouble(panierController.listeProduit[widget.index]['prix']);
+    widget.prix = RxDouble(double.parse(
+        panierController.listeProduit[widget.index]['node']['price']));
+    widget.resultat = RxDouble(double.parse(
+        panierController.listeProduit[widget.index]['node']['price']));
     widget.v.value = widget.quant;
     widget.resultat.value = widget.prix.value * widget.v.value;
     //
@@ -65,7 +66,7 @@ class _CartePanier extends State<CartePanier> {
               flex: 3,
               child: Container(
                 child: Image.network(
-                    "${Utils.url}/${panierController.listeProduit[widget.index]['image']}"),
+                    "${panierController.listeProduit[widget.index]['node']['image']['sourceUrl']}"),
               ),
             ),
             Expanded(
@@ -81,7 +82,7 @@ class _CartePanier extends State<CartePanier> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "${panierController.listeProduit[widget.index]['titre']}",
+                        "${panierController.listeProduit[widget.index]['node']['name']}",
                         softWrap: true,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -91,8 +92,7 @@ class _CartePanier extends State<CartePanier> {
                       alignment: Alignment.centerLeft,
                       child: Obx(() {
                         print("valeur: ${widget.resultat.value}");
-                        return Text(
-                            "${panierController.listeProduit[widget.index]['devise']} ${widget.resultat.value}");
+                        return Text("\$ ${widget.resultat.value}");
                       }),
                     ),
                     SizedBox(

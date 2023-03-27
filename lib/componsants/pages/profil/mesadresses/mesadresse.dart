@@ -13,7 +13,7 @@ class Mesadresses extends StatefulWidget {
 class _Mesadresses extends State<Mesadresses> with TickerProviderStateMixin {
   late TabController controller;
 
-  List options = ['Nouvelle adresse', 'Liste des adresses'];
+  List options = ['nouvelle_adresse'.tr, 'liste_adresse'.tr];
   //
   final formKey = GlobalKey<FormState>();
   final titre = TextEditingController();
@@ -49,27 +49,8 @@ class _Mesadresses extends State<Mesadresses> with TickerProviderStateMixin {
         title: const Text(
           "Mes adresses",
         ),
-        backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: <Color>[Colors.yellow.shade700, Colors.black],
-            ),
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-          )
-        ],
         bottom: TabBar(
           isScrollable: true,
           controller: controller,
@@ -79,8 +60,8 @@ class _Mesadresses extends State<Mesadresses> with TickerProviderStateMixin {
             fontWeight: FontWeight.w700,
           ),
           //indicator: BoxDecoration(),
-          indicatorColor: Colors.white,
-          labelColor: Colors.grey.shade300,
+          indicatorColor: Colors.black,
+          labelColor: Colors.grey,
           unselectedLabelColor: Colors.grey.shade800,
           unselectedLabelStyle: const TextStyle(
             fontWeight: FontWeight.normal,
@@ -88,7 +69,7 @@ class _Mesadresses extends State<Mesadresses> with TickerProviderStateMixin {
           ),
           tabs: List.generate(options.length, (index) {
             return Tab(
-              text: options[index],
+              text: "${options[index]}".tr,
             );
           }),
         ),
@@ -104,13 +85,13 @@ class _Mesadresses extends State<Mesadresses> with TickerProviderStateMixin {
                 children: [
                   TextFormField(
                     controller: titre,
-                    decoration: const InputDecoration(
-                      hintText: 'Titre',
-                      labelText: 'Titre',
+                    decoration: InputDecoration(
+                      hintText: 'titre_adresse'.tr,
+                      labelText: 'titre_adresse'.tr,
                     ),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Entrez le Titre';
+                        return 'titre_adresse_message'.tr;
                       }
 
                       return null;
@@ -128,7 +109,7 @@ class _Mesadresses extends State<Mesadresses> with TickerProviderStateMixin {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text("Pays  "),
+                        Text("pays".tr),
                         CountryCodePicker(
                           onChanged: (p) {
                             pays = p.code!;
@@ -153,13 +134,13 @@ class _Mesadresses extends State<Mesadresses> with TickerProviderStateMixin {
                   ),
                   TextFormField(
                     controller: etatProvince,
-                    decoration: const InputDecoration(
-                      hintText: 'Etat / Province',
-                      labelText: 'Etat / Province',
+                    decoration: InputDecoration(
+                      hintText: 'etat_province'.tr,
+                      labelText: 'etat_province'.tr,
                     ),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Entrez votre province ou adresse';
+                        return 'etat_province_message'.tr;
                       }
 
                       return null;
@@ -173,11 +154,13 @@ class _Mesadresses extends State<Mesadresses> with TickerProviderStateMixin {
                   ),
                   TextFormField(
                     controller: ville,
-                    decoration: const InputDecoration(
-                        hintText: 'Ville', labelText: 'Ville'),
+                    decoration: InputDecoration(
+                      hintText: 'ville'.tr,
+                      labelText: 'ville'.tr,
+                    ),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Entrez votre ville';
+                        return 'ville_message'.tr;
                       }
 
                       return null;
@@ -191,13 +174,13 @@ class _Mesadresses extends State<Mesadresses> with TickerProviderStateMixin {
                   ),
                   TextFormField(
                     controller: commArrond,
-                    decoration: const InputDecoration(
-                      hintText: 'Commune / Arrondissement',
-                      labelText: 'Commune / Arrondissement',
+                    decoration: InputDecoration(
+                      hintText: 'commune'.tr,
+                      labelText: 'commune'.tr,
                     ),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Entrez votre commArrond';
+                        return 'commune_message'.tr;
                       }
 
                       return null;
@@ -211,11 +194,11 @@ class _Mesadresses extends State<Mesadresses> with TickerProviderStateMixin {
                   ),
                   TextFormField(
                     controller: quartier,
-                    decoration: const InputDecoration(
-                        hintText: 'Quartier', labelText: 'Quartier'),
+                    decoration: InputDecoration(
+                        hintText: 'quartier'.tr, labelText: 'quartier'.tr),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Entrez votre quartier';
+                        return 'quartier_message'.tr;
                       }
 
                       return null;
@@ -229,13 +212,13 @@ class _Mesadresses extends State<Mesadresses> with TickerProviderStateMixin {
                   ),
                   TextFormField(
                     controller: avenue,
-                    decoration: const InputDecoration(
-                      hintText: 'Avenue ou Rue',
-                      labelText: 'Avenue ou Rue',
+                    decoration: InputDecoration(
+                      hintText: 'avenue'.tr,
+                      labelText: 'avenue'.tr,
                     ),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Entrez votre avenue';
+                        return 'avenue_message'.tr;
                       }
 
                       return null;
@@ -249,13 +232,13 @@ class _Mesadresses extends State<Mesadresses> with TickerProviderStateMixin {
                   ),
                   TextFormField(
                     controller: numero,
-                    decoration: const InputDecoration(
-                      hintText: 'Numéro',
-                      labelText: 'Numéro',
+                    decoration: InputDecoration(
+                      hintText: 'numero'.tr,
+                      labelText: 'numero'.tr,
                     ),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Entrez votre numéro';
+                        return 'numero_message'.tr;
                       }
 
                       return null;
@@ -269,13 +252,13 @@ class _Mesadresses extends State<Mesadresses> with TickerProviderStateMixin {
                   ),
                   TextFormField(
                     controller: codePostal,
-                    decoration: const InputDecoration(
-                      hintText: 'Code postal',
-                      labelText: 'Code postal',
+                    decoration: InputDecoration(
+                      hintText: 'code_postal'.tr,
+                      labelText: 'code_postal'.tr,
                     ),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Entrez votre Code postal';
+                        return 'code_postal_message'.tr;
                       }
 
                       return null;
@@ -287,8 +270,8 @@ class _Mesadresses extends State<Mesadresses> with TickerProviderStateMixin {
                   const SizedBox(
                     height: 20,
                   ),
-                  ElevatedButton(
-                    onPressed: () {
+                  InkWell(
+                    onTap: () {
                       if (formKey.currentState!.validate()) {
                         setState(() {
                           listeAdresse.add({
@@ -313,7 +296,25 @@ class _Mesadresses extends State<Mesadresses> with TickerProviderStateMixin {
                         });
                       }
                     },
-                    child: const Text("Ajouter"),
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 40,
+                      child: Text(
+                        "ajouter".tr,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15,
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: <Color>[Colors.yellow.shade700, Colors.black],
+                        ),
+                      ),
+                    ),
                   )
                 ],
               ),

@@ -7,7 +7,7 @@ import 'panier/panier.dart';
 import 'panier/panier_controller.dart';
 import 'profil/profile.dart';
 import 'recherche/recherche.dart';
-import 'vendeur/vendeur.dart';
+//import 'vendeur/vendeur.dart';
 //import 'package:get_storage/get_storage.dart';
 //import 'package:hive/hive.dart';
 
@@ -38,10 +38,10 @@ class Accueil extends StatelessWidget {
                 : accueilController.getEcranIndex() == 2
                     ? Recherche()
                     : accueilController.getEcranIndex() == 3
-                        ? Pagner()
-                        : accueilController.getEcranIndex() == 4
-                            ? Vendeur()
-                            : Profil()),
+                        ? Panier()
+                        //: accueilController.getEcranIndex() == 4
+                        //  ? Vendeur()
+                        : Profil()),
       ),
       bottomNavigationBar: BtmNavBar(),
     );
@@ -96,7 +96,7 @@ class _BtnNavBar extends State<BtmNavBar> {
           const BottomNavigationBarItem(icon: Icon(Icons.qr_code), label: "__"),
           const BottomNavigationBarItem(icon: Icon(Icons.search), label: "__"),
           BottomNavigationBarItem(icon: indexPanier()!, label: "__"),
-          BottomNavigationBarItem(icon: indexVendeur()!, label: "__"),
+          //BottomNavigationBarItem(icon: indexVendeur()!, label: "__"),
           const BottomNavigationBarItem(icon: Icon(Icons.person), label: "__"),
         ],
       ),

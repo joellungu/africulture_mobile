@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:africulture_mobile/componsants/pages/login/creer_compte.dart';
 import 'package:africulture_mobile/componsants/pages/panier/commander/commander.dart';
 import 'package:africulture_mobile/componsants/pages/panier/expedition/expedition.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class Splash extends StatelessWidget {
       }
       //
       Get.off(() => Principale());
+      //Get.off(() => CreerCompte());
       // Principale());//Commander
     });
     //
@@ -31,8 +33,20 @@ class Splash extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text("AfriCulture")),
+    return Scaffold(
+      body: Center(
+        child: Container(
+          height: Get.size.height / 3,
+          width: Get.size.width / 2,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            image: const DecorationImage(
+              image: ExactAssetImage("assets/africulture_sarlu_logo.png"),
+              fit: BoxFit.contain,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

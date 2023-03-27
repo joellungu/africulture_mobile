@@ -1,7 +1,8 @@
 import 'dart:async';
-
+import 'package:africulture_mobile/componsants/pages/testQuery.dart';
 import 'package:africulture_mobile/utile/utils.dart';
 import 'package:card_swiper/card_swiper.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
@@ -22,26 +23,37 @@ class Coming extends GetView<ComingController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Afri Culture",
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: <Color>[Colors.yellow.shade700, Colors.black],
-            ),
+        //titre//Afri Culture
+        title: Text(
+          "titre".tr,
+          style: const TextStyle(
+            color: Colors.black,
           ),
         ),
+        // actions: [
+        //   IconButton(
+        //       onPressed: () async {
+        //         //
+        //         Get.to(TestQuery());
+        //       },
+        //       icon: Icon(Icons.check))
+        // ],
+        backgroundColor: Colors.yellow.shade700,
+        elevation: 0,
+        centerTitle: true,
+        // flexibleSpace: Container(
+        //   decoration: BoxDecoration(
+        //     gradient: LinearGradient(
+        //       begin: Alignment.centerLeft,
+        //       end: Alignment.centerRight,
+        //       colors: <Color>[Colors.yellow.shade700, Colors.black],
+        //     ),
+        //   ),
+        // ),
       ),
       body: controller.obx(
         (state) {
           print("__::${state!['promotion'].runtimeType}");
-
           return ListView(
             padding: const EdgeInsets.all(0),
             children: [
@@ -81,20 +93,26 @@ class Coming extends GetView<ComingController> {
                             height: 40,
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              " Nouvelle articles".tr,
+                              "nos_produit".tr,
                               style:
                                   TextStyle(color: Colors.black, fontSize: 20),
                             ),
                           ),
                           Container(
-                            height: MediaQuery.of(context).size.height / 2,
+                            height: MediaQuery.of(context).size.height,
                             //color: Colors.blueAccent,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
+                            child: GridView.count(
+                              mainAxisSpacing: 1,
+                              crossAxisSpacing: 1,
+                              childAspectRatio: 0.7,
+                              //scrollDirection: Axis.horizontal,
+                              crossAxisCount: 3,
                               children: List.generate(
                                 state['nouveauP'].length,
                                 (index) => CarteProduite(
-                                    state['nouveauP'][index], false),
+                                  state['nouveauP'][index],
+                                  false,
+                                ),
                               ),
                             ),
                           )
@@ -118,7 +136,7 @@ class Coming extends GetView<ComingController> {
                             ),
                           ),
                           Container(
-                            height: MediaQuery.of(context).size.height / 2,
+                            height: MediaQuery.of(context).size.height / 2.5,
                             //color: Colors.blueAccent,
                             child: ListView(
                               scrollDirection: Axis.horizontal,
@@ -149,7 +167,7 @@ class Coming extends GetView<ComingController> {
                             ),
                           ),
                           Container(
-                            height: MediaQuery.of(context).size.height / 2,
+                            height: MediaQuery.of(context).size.height / 2.5,
                             //color: Colors.blueAccent,
                             child: ListView(
                               scrollDirection: Axis.horizontal,

@@ -1,5 +1,10 @@
+import 'dart:convert';
+
+import 'package:africulture_mobile/componsants/pages/login/log.dart';
+import 'package:africulture_mobile/componsants/pages/profil/politique.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import '../../contrôler/splash_controller.dart';
 import '../../widgets/choix_langue.dart';
 import '../../widgets/noter.dart';
@@ -22,21 +27,16 @@ class Profil extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //
+    var box = GetStorage();
+    //String m = "${box.read('name') ?? ''}";
+    RxString name = RxString(box.read('names') ?? '');
+    //
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Profil"),
-        backgroundColor: Colors.white,
+        title: Text("profil".tr),
         elevation: 0,
         centerTitle: true,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: <Color>[Colors.yellow.shade700, Colors.black],
-            ),
-          ),
-        ),
       ), //
       body: ListView(
         padding: EdgeInsets.all(10),
@@ -48,20 +48,17 @@ class Profil extends StatelessWidget {
             () => ListTile(
               onTap: () {
                 print(profileController.infosPerso);
-                if (profileController.infosPerso['nom'] == null) {
+                // ignore: unrelated_type_equality_checks
+                if (name == '') {
                   //splashController.homologin.value = false;
-                  Get.to(Login());
+                  Get.to(Log());
                 } else {
                   Get.to(ProfilInfos());
                 }
               },
               leading: Icon(Icons.person),
-              title: profileController.infosPerso['nom'] == null
-                  ? Text("connexion")
-                  : Text("${profileController.infosPerso['nom']}"),
-              subtitle: profileController.infosPerso['nom'] == null
-                  ? Container()
-                  : Text("${profileController.infosPerso['numero']}"),
+              title: name == '' ? Text("connexion".tr) : Text("$name"),
+              subtitle: name == '' ? Container() : Text("$name"),
               trailing: Icon(
                 Icons.arrow_forward_ios,
                 color: Colors.grey.shade700,
@@ -71,9 +68,9 @@ class Profil extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
-          const Text(
-            "Réglage générale",
-            style: TextStyle(
+          Text(
+            "parametres".tr,
+            style: const TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
             ),
@@ -85,21 +82,21 @@ class Profil extends StatelessWidget {
             onTap: () {
               Get.to(Favorit());
             },
-            leading: Icon(Icons.favorite_outline),
-            title: Text("liste_de_favorit"),
+            leading: const Icon(Icons.favorite_outline),
+            title: Text("favoris".tr),
             trailing: Container(
               width: 100,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text("4 "),
-                  Text("Articles"),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    color: Colors.grey.shade700,
-                  )
-                ],
-              ),
+              // child: Row(
+              //   mainAxisAlignment: MainAxisAlignment.end,
+              //   children: [
+              //     Text("4 "),
+              //     Text("Articles"),
+              //     Icon(
+              //       Icons.arrow_forward_ios,
+              //       color: Colors.grey.shade700,
+              //     )
+              //   ],
+              // ),
             ),
           ),
           ListTile(
@@ -107,7 +104,7 @@ class Profil extends StatelessWidget {
               Get.to(HistoriqueCommande());
             },
             leading: Icon(Icons.shopping_basket_outlined),
-            title: Text("commandes"),
+            title: Text("commande".tr),
             trailing: Container(
               width: 100,
               child: Row(
@@ -124,36 +121,11 @@ class Profil extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.notifications_active_outlined),
-            title: Text("notifications"),
-            trailing: Container(
-              width: 100,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Obx(
-                    () => Switch(
-                      activeColor: Colors.yellow.shade700,
-                      value: profileController.notification.value,
-                      onChanged: (c) {
-                        profileController.notification.value = c;
-                        String mess = c
-                            ? "Notifications activés"
-                            : "Notifications desactivés";
-                        Get.snackbar("Notification", mess);
-                      },
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          ListTile(
             onTap: () {
               Get.to(Mesadresses());
             },
             leading: Icon(Icons.contact_page_outlined),
-            title: Text("Mes adresses"),
+            title: Text("adresse".tr),
             trailing: Container(
               width: 100,
               child: Row(
@@ -169,50 +141,38 @@ class Profil extends StatelessWidget {
               ),
             ),
           ),
-          Obx(
-            () => profileController.notification.value
-                ? ListTile(
-                    leading: Icon(Icons.menu),
-                    title: Text("Mes notifications"),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Colors.grey.shade700,
-                    ),
-                  )
-                : Container(),
-          ),
           ListTile(
             onTap: () {
               showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text(
-                        "Langues",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text(
+                      "Langues",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
                       ),
-                      content: Container(
-                        color: Colors.white,
-                        height: 150,
-                        width: 150,
-                        alignment: Alignment.center,
-                        child: ChoixLangue(),
-                      ),
-                    );
-                  });
+                    ),
+                    content: Container(
+                      color: Colors.white,
+                      height: 200,
+                      width: 150,
+                      alignment: Alignment.center,
+                      child: ChoixLangue(),
+                    ),
+                  );
+                },
+              );
             },
             leading: Icon(Icons.language),
-            title: Text("langues"),
+            title: Text("langues".tr),
             trailing: Container(
               width: 100,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text("3 "),
-                  Text("Langues"),
+                  Text(" 2 "),
                   Icon(
                     Icons.arrow_forward_ios,
                     color: Colors.grey.shade700,
@@ -222,72 +182,14 @@ class Profil extends StatelessWidget {
             ),
           ),
           ListTile(
-              leading: Icon(Icons.star_border),
-              title: Text("Commenter"),
-              trailing: Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.grey.shade700,
-              )),
-          ListTile(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text("Notes nous"),
-                      content: NoterNous(),
-                      actions: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.check,
-                          ),
-                        )
-                      ],
-                    );
-                  },
-                );
-              },
-              leading: Icon(Icons.speaker_notes),
-              title: Text("Devenez partenaire"),
-              trailing: Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.grey.shade700,
-              )),
-          ListTile(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text("Notes nous"),
-                      content: NoterNous(),
-                      actions: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.check,
-                          ),
-                        )
-                      ],
-                    );
-                  },
-                );
-              },
-              leading: Icon(Icons.edit_note),
-              title: Text("Noter l'application"),
-              trailing: Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.grey.shade700,
-              )),
-          ListTile(
-              onTap: (() => Get.to(Propos())),
-              leading: Icon(Icons.info_outline),
-              title: Text("propos"),
-              trailing: Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.grey.shade700,
-              )),
+            onTap: (() => Get.to(Politique())),
+            leading: Icon(Icons.info_outline),
+            title: Text("politique".tr),
+            trailing: Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.grey.shade700,
+            ),
+          ),
           const SizedBox(
             height: 10,
           ),

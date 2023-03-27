@@ -35,7 +35,6 @@ class _HistoriqueCommande extends State<HistoriqueCommande> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Historique de commandes"),
-        backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
@@ -47,15 +46,6 @@ class _HistoriqueCommande extends State<HistoriqueCommande> {
         ),
         elevation: 0,
         centerTitle: true,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: <Color>[Colors.yellow.shade700, Colors.black],
-            ),
-          ),
-        ),
       ),
       body: Obx(
         () => Container(
@@ -134,7 +124,6 @@ class _DetailsCommande extends State<DetailsCommande>
     return Scaffold(
       appBar: AppBar(
         title: Text("Détails de la commandes"),
-        backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
@@ -146,15 +135,6 @@ class _DetailsCommande extends State<DetailsCommande>
         ),
         elevation: 0,
         centerTitle: true,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: <Color>[Colors.yellow.shade700, Colors.black],
-            ),
-          ),
-        ),
       ),
       body: Column(
         children: [

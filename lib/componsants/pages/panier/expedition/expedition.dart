@@ -44,9 +44,13 @@ class _Expedition extends State<Expedition> {
   RxDouble tc = 0.0.obs;
   double tcc = 0.0;
   //
+  List l = ["DHL", "Boloré", "Autre"];
+  RxString id = "DHL".obs;
+  //
   double conte = Get.width / 4;
   int i = 1;
   //
+  RxBool pass = true.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +110,7 @@ class _Expedition extends State<Expedition> {
                           ],
                         ),
                       ),
-                      TextSpan(
+                      const TextSpan(
                         text: 'Pays de destination \n',
                         style: TextStyle(
                           color: Colors.blueGrey,
@@ -116,13 +120,13 @@ class _Expedition extends State<Expedition> {
                       ),
                       TextSpan(
                         text: "***${adresseController.pays.value}***\n",
-                        style: TextStyle(
+                        style: const TextStyle(
                           //color: Colors.grey.shade700,
                           fontWeight: FontWeight.normal,
                           fontSize: 15,
                         ),
                       ),
-                      TextSpan(
+                      const TextSpan(
                         text: 'Frais de transfère\n',
                         style: TextStyle(
                           color: Colors.blueGrey,
@@ -174,51 +178,100 @@ class _Expedition extends State<Expedition> {
                 height: 10,
               ),
               Container(
-                height: 150,
-                child: Column(
+                height: 50,
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    ListTile(
-                      title: const Text(
-                        'STANDARD',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                    Expanded(
+                      flex: 5,
+                      child: ListTile(
+                        title: const Text(
+                          'STANDARD',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        leading: Radio(
+                          value: BestTutorSite.STANDARD,
+                          groupValue: _site,
+                          onChanged: (BestTutorSite? value) {
+                            setState(() {
+                              _site = value!;
+                              tva = 5;
+                              expeditionController.express.value = false;
+                            });
+                          },
                         ),
                       ),
-                      leading: Radio(
-                        value: BestTutorSite.STANDARD,
-                        groupValue: _site,
-                        onChanged: (BestTutorSite? value) {
-                          setState(() {
-                            _site = value!;
-                            tva = 5;
-                            expeditionController.express.value = false;
-                          });
-                        },
-                      ),
                     ),
-                    ListTile(
-                      title: const Text(
-                        'EXPRESS',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                    Expanded(
+                      flex: 5,
+                      child: ListTile(
+                        title: const Text(
+                          'EXPRESS',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        leading: Radio(
+                          value: BestTutorSite.EXPRESS,
+                          groupValue: _site,
+                          onChanged: (BestTutorSite? value) {
+                            setState(() {
+                              _site = value!;
+                              tva = 15;
+                              expeditionController.express.value = true;
+                            });
+                          },
                         ),
                       ),
-                      leading: Radio(
-                        value: BestTutorSite.EXPRESS,
-                        groupValue: _site,
-                        onChanged: (BestTutorSite? value) {
-                          setState(() {
-                            _site = value!;
-                            tva = 15;
-                            expeditionController.express.value = true;
-                          });
-                        },
-                      ),
-                    ),
+                    )
                   ],
                 ),
-              )
+              ),
+              SizedBox(
+                height: 300,
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  padding: const EdgeInsets.all(10),
+                  children: List.generate(
+                    l.length,
+                    (index) => InkWell(
+                      onTap: () {
+                        id.value = l[index];
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Obx(
+                            () => (Text(
+                              "${l[index]}",
+                              style: TextStyle(
+                                color: id.value == l[index]
+                                    ? Colors.yellow
+                                    : Colors.grey,
+                                fontSize: 35,
+                              ),
+                            )),
+                          ),
+                          Obx(
+                            () => pass.value
+                                ? Text(
+                                    "${index + 1 * 3 * tva} \$",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 25,
+                                    ),
+                                  )
+                                : Container(),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
               /*
               ExpandablePanel(
                 header: Text(
@@ -321,7 +374,7 @@ class _Expedition extends State<Expedition> {
                         commanderController.avancement.value + conte;
                     commanderController.titre.value = "Commandes";
                     widget.pageController.nextPage(
-                      duration: Duration(seconds: 1),
+                      duration: const Duration(seconds: 1),
                       curve: Curves.ease,
                     );
                   }
@@ -363,12 +416,12 @@ class ChoixExp extends StatelessWidget {
             child: Stack(
               children: [
                 Padding(
-                  padding: EdgeInsets.all(0),
+                  padding: const EdgeInsets.all(0),
                   child: Align(
                     alignment: Alignment.center,
                     child: Text(
                       titre,
-                      style: TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.black),
                     ),
                   ),
                 ),
@@ -382,7 +435,7 @@ class ChoixExp extends StatelessWidget {
                             child: Container(
                               color: Colors.white,
                               alignment: Alignment.center,
-                              child: Icon(
+                              child: const Icon(
                                 Icons.check,
                                 color: Colors.black,
                                 size: 100,
